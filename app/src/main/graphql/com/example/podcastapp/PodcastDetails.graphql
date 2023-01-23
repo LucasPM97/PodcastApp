@@ -1,0 +1,18 @@
+query PodcastDetails($name: String!) {
+    getPodcastSeries(name:$name){
+        uuid,
+        name,
+        description,
+        imageUrl,
+        genres,
+        websiteUrl,
+        authorName,
+        episodes(sortOrder: LATEST, limitPerPage: 10){
+            uuid,
+            name,
+            description,
+            audioUrl
+            duration
+        }
+    }
+}
