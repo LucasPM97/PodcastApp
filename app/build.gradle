@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id "com.expediagroup.graphql"
+    id 'com.apollographql.apollo3' version "$apollo_version"
 }
 
 android {
@@ -76,8 +76,8 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_android_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_android_compose_version"
 
-    // GraphQL
-    implementation "com.expediagroup:graphql-kotlin-spring-client:$graphQL_version"
+    // Apollo GraphQL Impl
+    implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -85,4 +85,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     debugImplementation "androidx.compose.ui:ui-tooling"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.example.podcastapp")
+    }
 }
