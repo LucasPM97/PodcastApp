@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "com.expediagroup.graphql"
 }
 
 android {
@@ -74,6 +75,9 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_android_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_android_compose_version"
+
+    // GraphQL
+    implementation "com.expediagroup:graphql-kotlin-spring-client:$graphQL_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
