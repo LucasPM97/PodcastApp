@@ -1,4 +1,4 @@
-package com.example.podcastapp.di
+package com.example.podcastapp_core.di
 
 import android.os.Looper
 import com.apollographql.apollo3.ApolloClient
