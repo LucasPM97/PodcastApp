@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "PodcastApp"
 include ':app'
+include ':podcast_details'
+include ':core'
