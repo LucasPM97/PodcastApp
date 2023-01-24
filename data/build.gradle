@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.core'
+    namespace 'com.example.data'
     compileSdk 33
 
     defaultConfig {
@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     // Koin: Dependency Injection
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_android_version"
@@ -40,6 +39,8 @@ dependencies {
 
     // Apollo GraphQL Impl
     implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
+    apolloMetadata project(':core')
+    implementation project(':core')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -47,6 +48,6 @@ dependencies {
 }
 
 apollo {
-    packageName.set("com.example.core")
+    packageName.set("com.example.data")
     generateApolloMetadata.set(true)
 }

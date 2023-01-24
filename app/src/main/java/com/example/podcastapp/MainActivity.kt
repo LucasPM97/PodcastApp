@@ -11,10 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.example.podcast_details.data.repositories.IPodcastRepository
+import com.example.data.repositories.IPodcastRepository
 import com.example.podcastapp.ui.theme.PodcastAppTheme
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 
 class MainActivity : ComponentActivity() {
 
