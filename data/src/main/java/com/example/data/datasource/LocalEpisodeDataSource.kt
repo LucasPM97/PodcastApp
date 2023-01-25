@@ -5,12 +5,30 @@ import com.example.podcast_details_domain.models.Episode
 import kotlin.random.Random
 
 class LocalEpisodeDataSource : ILocalEpisodeDataSource {
+    override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {
+        return listOf(
+            mockEpisode(),
+            mockEpisode().copy(
+                uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+                name = "Case #2 Britney"
+            ),
+            mockEpisode().copy(
+                uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+                name = "Case #2 Britney"
+            ),
+        )
+    }
+
+    override suspend fun storeEpisodes(episodes: List<Episode>) {
+        //TODO: Implement Database INSERT List
+    }
+
     override suspend fun getEpisodesHistory(pageLimit: Int): List<Episode> {
         return mockWatchedEpisodeList()
     }
 
     override suspend fun includeEpisodeToHistory(episodeUuid: String) {
-        //TODO: Implement Database INSET ITEM
+        //TODO: Implement Database UPDATE ITEM
     }
 
     override suspend fun getEpisode(episodeUuid: String): Episode {
