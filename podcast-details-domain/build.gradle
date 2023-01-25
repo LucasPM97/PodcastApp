@@ -9,6 +9,9 @@ java {
 }
 
 dependencies {
+    // Modules
+//    implementation project(':core')
+
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     // Koin: Dependency Injection

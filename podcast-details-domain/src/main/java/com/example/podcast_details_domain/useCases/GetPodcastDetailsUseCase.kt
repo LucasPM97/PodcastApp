@@ -2,6 +2,7 @@ package com.example.podcast_details_domain.useCases
 
 import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
 import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
+import com.example.podcast_details_domain.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -25,17 +26,23 @@ class GetPodcastDetailsUseCase(
             )
         }
 
-        val remotePodcastDetails = podcastRepository.getRemotePodcastDetails(podcastUuid)
+        val response = podcastRepository.getRemotePodcastDetails(podcastUuid)
 
-        // TODO: Check if API calls returns a valid PodcastDetails
-        if (remotePodcastDetails != null) {
-            podcastRepository.storePodcastDetails(remotePodcastDetails)
-            remotePodcastDetails.episodes?.let {
-                episodeRepository.storeEpisodes(it)
+        return@withContext when (response) {
+            is ApiResponse.Success -> {
+                response.data?.let { data ->
+                    podcastRepository.storePodcastDetails(data)
+                    data.episodes?.let {
+                        episodeRepository.storeEpisodes(it)
+                    }
+                }
+                response.data
+            }
+            is ApiResponse.Error -> {
+                // Show error message
+                null
             }
         }
-
-        return@withContext remotePodcastDetails
     }
 
 }
