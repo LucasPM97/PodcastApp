@@ -16,3 +16,4 @@ rootProject.name = "PodcastApp"
 include ':app'
 include ':data'
 include ':core'
+include ':podcast-details-domain'
