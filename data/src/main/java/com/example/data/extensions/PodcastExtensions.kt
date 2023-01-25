@@ -3,8 +3,8 @@ package com.example.data.extensions
 import com.example.data.PodcastDetailsQuery
 import com.example.podcast_details_domain.models.PodcastDetails
 
-fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast() {
-    PodcastDetails(
+fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast(): PodcastDetails {
+    return PodcastDetails(
         uuid,
         name,
         description,
@@ -12,6 +12,8 @@ fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast() {
         genres?.toGenreDomainList(),
         websiteUrl,
         authorName,
-        episodes?.toEpisodeDomainList()
+        episodes?.toEpisodeDomainList(
+            podcastUuid = uuid ?: ""
+        )
     )
 }

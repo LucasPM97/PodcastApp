@@ -10,9 +10,14 @@ query PodcastDetails($name: String!) {
         episodes(sortOrder: LATEST, limitPerPage: 10){
             uuid,
             name,
-            description,
-            audioUrl
-            duration
+            subtitle,
+            imageUrl,
+            audioUrl,
+            videoUrl,
+            seasonNumber,
+            episodeNumber,
+            duration,
+            datePublished,
         }
     }
 }

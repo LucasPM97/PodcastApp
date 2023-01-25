@@ -7,3 +7,10 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
 }
+
+dependencies {
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    // Koin: Dependency Injection
+    implementation "io.insert-koin:koin-core:$koin_version"
+}
