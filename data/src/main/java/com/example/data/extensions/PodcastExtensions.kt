@@ -1,5 +1,6 @@
 package com.example.data.extensions
 
+import com.example.core.type.Genre
 import com.example.data.PodcastDetailsQuery
 import com.example.data.models.LocalPodcastDetails
 import com.example.podcast_details_domain.models.PodcastDetails
@@ -30,5 +31,20 @@ fun PodcastDetails.toLocalPodcastDetails(): LocalPodcastDetails {
         },
         websiteUrl,
         authorName
+    )
+}
+
+fun LocalPodcastDetails.toDomainPodcastDetails(): PodcastDetails {
+    return PodcastDetails(
+        uuid,
+        name,
+        description,
+        imageUrl,
+        genres?.map {
+            Genre.valueOf(it)
+        }?.toGenreDomainList(),
+        websiteUrl,
+        authorName,
+        episodes = null
     )
 }
