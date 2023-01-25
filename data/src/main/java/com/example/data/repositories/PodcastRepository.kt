@@ -4,6 +4,7 @@ import com.example.data.datasource.IRemotePodcastDataSource
 import com.example.data.extensions.toDomainPodcast
 import com.example.podcast_details_domain.data_interfaces.datasource.ILocalPodcastDataSource
 import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
+import com.example.podcast_details_domain.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -19,15 +20,16 @@ class PodcastRepository(
             return@withContext localDataSource.getPodcastDetails(podcastUuid)
         }
 
-    override suspend fun getRemotePodcastDetails(podcastUuid: String): PodcastDetails? =
+    override suspend fun getRemotePodcastDetails(podcastUuid: String): ApiResponse<PodcastDetails> =
         withContext(dispatcher) {
-            val response = remoteDataSource.getPodcastDetails(podcastUuid)
+            val result = remoteDataSource.getPodcastDetails(podcastUuid)
 
-            if (response.hasErrors()) {
-                return@withContext null
-            }
-
-            return@withContext response.data?.getPodcastSeries?.toDomainPodcast()
+            return@withContext if (result == null)
+                ApiResponse.Error()
+            else
+                ApiResponse.Success(
+                    data = result.toDomainPodcast()
+                )
         }
 
     override suspend fun storePodcastDetails(podcast: PodcastDetails) = withContext(dispatcher) {

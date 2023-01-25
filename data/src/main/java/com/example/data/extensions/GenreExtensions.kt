@@ -3,6 +3,7 @@ package com.example.data.extensions
 import com.example.core.type.Genre
 
 
+
 fun List<Genre?>.toGenreDomainList(): List<com.example.podcast_details_domain.models.Genre> {
     val mappedGenre = mutableListOf<com.example.podcast_details_domain.models.Genre>()
 

@@ -40,6 +40,7 @@ dependencies {
     // Apollo GraphQL Impl
     implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
     apolloMetadata project(':core')
+    //Modules
     implementation project(':core')
     implementation project(':podcast-details-domain')
 
