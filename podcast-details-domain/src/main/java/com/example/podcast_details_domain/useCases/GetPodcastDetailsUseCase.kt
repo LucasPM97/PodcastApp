@@ -15,11 +15,13 @@ class GetPodcastDetailsUseCase(
 
     suspend operator fun invoke(podcastUuid: String): PodcastDetails? = withContext(dispatcher) {
 
-        val localPodcastDetails = podcastRepository.getLocalPodcastDetails(podcastUuid)
+        val localPodcastDetails: PodcastDetails? = null
+        podcastRepository.getLocalPodcastDetails(podcastUuid)
 
         if (localPodcastDetails != null) {
+            val podcastEpisodes = episodeRepository.getEpisodesByPodcast(podcastUuid)
             return@withContext localPodcastDetails.copy(
-                episodes = episodeRepository.getEpisodesByPodcast(podcastUuid)
+                episodes = podcastEpisodes
             )
         }
 
