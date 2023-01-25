@@ -8,11 +8,16 @@ query SearchAll($term: String!,$filterForTypes:[TaddyType]!, $limitPerPage: Int!
             description
         }
         podcastEpisodes{
-            uuid
-            name
-            audioUrl
-            subtitle
-            duration
+            uuid,
+            name,
+            subtitle,
+            imageUrl,
+            audioUrl,
+            videoUrl,
+            seasonNumber,
+            episodeNumber,
+            duration,
+            datePublished,
             podcastSeries{
                 uuid
                 name
@@ -37,11 +42,16 @@ query SearchSeriesForTerm($term: String!, $limitPerPage: Int!) {
 query SearchEpisodesForTerm($term: String!, $limitPerPage: Int!) {
     searchForTerm(term:$term, filterForTypes:PODCASTEPISODE, limitPerPage: $limitPerPage){
         podcastEpisodes{
-            uuid
-            name
-            audioUrl
-            subtitle
-            duration
+            uuid,
+            name,
+            subtitle,
+            imageUrl,
+            audioUrl,
+            videoUrl,
+            seasonNumber,
+            episodeNumber,
+            duration,
+            datePublished,
             podcastSeries{
                 uuid
                 name

@@ -1,23 +1,18 @@
 package com.example.data.repositories
 
-import com.example.data.datasource.ILocalEpisodeDataSource
-import com.example.data.datasource.ILocalPodcastDataSource
-
-interface IEpisodeRepository {
-    suspend fun getEpisodesHistory(pageLimit:Int)//Returns: Include Episode Data Class to
-    suspend fun includeEpisodeToHistory()// Parameter: Include Episode Data Class
-    suspend fun episodeWatched(episodeUuid: String): Boolean
-}
+import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpisodeDataSource
+import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
+import com.example.podcast_details_domain.models.Episode
 
 class EpisodeRepository(
     private val localDataSource: ILocalEpisodeDataSource
 ) : IEpisodeRepository {
-    override suspend fun getEpisodesHistory(pageLimit: Int) {
+    override suspend fun getEpisodesHistory(pageLimit: Int): List<Episode> {
         return localDataSource.getEpisodesHistory(pageLimit)
     }
 
-    override suspend fun includeEpisodeToHistory() {
-        localDataSource.includeEpisodeToHistory(/*Include params*/)
+    override suspend fun includeEpisodeToHistory(episodeUuid: String) {
+        localDataSource.includeEpisodeToHistory(episodeUuid)
     }
 
     override suspend fun episodeWatched(episodeUuid: String): Boolean {
