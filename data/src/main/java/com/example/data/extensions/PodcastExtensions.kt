@@ -1,6 +1,7 @@
 package com.example.data.extensions
 
 import com.example.data.PodcastDetailsQuery
+import com.example.data.models.LocalPodcastDetails
 import com.example.podcast_details_domain.models.PodcastDetails
 
 fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast(): PodcastDetails {
@@ -15,5 +16,19 @@ fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast(): PodcastDetails {
         episodes?.toEpisodeDomainList(
             podcastUuid = uuid ?: ""
         )
+    )
+}
+
+fun PodcastDetails.toLocalPodcastDetails(): LocalPodcastDetails {
+    return LocalPodcastDetails(
+        uuid,
+        name,
+        description,
+        imageUrl,
+        genres?.map {
+            it.genreRemoteEnumString
+        },
+        websiteUrl,
+        authorName
     )
 }

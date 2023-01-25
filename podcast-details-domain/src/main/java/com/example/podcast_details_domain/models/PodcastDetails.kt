@@ -8,5 +8,5 @@ data class PodcastDetails(
     val genres: List<Genre>?,
     val websiteUrl: String?,
     val authorName: String?,
-    val episodes: List<Episode?>?,
+    val episodes: List<Episode>?,
 )

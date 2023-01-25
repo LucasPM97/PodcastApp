@@ -4,10 +4,11 @@ import com.example.data.PodcastDetailsQuery
 import com.example.podcast_details_domain.models.Episode
 
 // This only works if all episodes are from the same Podcast
-fun List<PodcastDetailsQuery.Episode?>.toEpisodeDomainList(podcastUuid: String): List<Episode?> =
-    map {
-        it?.toEpisodeDomain(podcastUuid)
-    }
+fun List<PodcastDetailsQuery.Episode?>.toEpisodeDomainList(podcastUuid: String): List<Episode> =
+    filterNotNull()
+        .map {
+            it.toEpisodeDomain(podcastUuid)
+        }
 
 fun PodcastDetailsQuery.Episode.toEpisodeDomain(podcastUuid: String): Episode {
     return Episode(
