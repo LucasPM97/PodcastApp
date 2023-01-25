@@ -1,5 +1,6 @@
 package com.example.data.datasource
 
+import com.example.data.extensions.toLocalPodcastDetails
 import com.example.podcast_details_domain.data_interfaces.datasource.ILocalPodcastDataSource
 import com.example.podcast_details_domain.models.Genre
 import com.example.podcast_details_domain.models.PodcastDetails
@@ -18,6 +19,7 @@ class LocalPodcastDataSource(
 
     override suspend fun storePodcastDetails(podcast: PodcastDetails) = withContext(dispatcher) {
         //TODO: Store data into Database
+        podcast.toLocalPodcastDetails()
     }
 
     private fun mockPodcastDetails(): PodcastDetails {

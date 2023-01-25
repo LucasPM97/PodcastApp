@@ -7,6 +7,14 @@ import com.example.podcast_details_domain.models.Episode
 class EpisodeRepository(
     private val localDataSource: ILocalEpisodeDataSource
 ) : IEpisodeRepository {
+    override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {
+        return localDataSource.getEpisodesByPodcast(podcastUuid)
+    }
+
+    override suspend fun storeEpisodes(episodes: List<Episode>) {
+        localDataSource.storeEpisodes(episodes)
+    }
+
     override suspend fun getEpisodesHistory(pageLimit: Int): List<Episode> {
         return localDataSource.getEpisodesHistory(pageLimit)
     }
