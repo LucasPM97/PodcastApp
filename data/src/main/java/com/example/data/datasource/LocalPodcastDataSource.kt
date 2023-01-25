@@ -20,6 +20,7 @@ class LocalPodcastDataSource(
     override suspend fun storePodcastDetails(podcast: PodcastDetails) = withContext(dispatcher) {
         //TODO: Store data into Database
         podcast.toLocalPodcastDetails()
+        return@withContext
     }
 
     private fun mockPodcastDetails(): PodcastDetails {
