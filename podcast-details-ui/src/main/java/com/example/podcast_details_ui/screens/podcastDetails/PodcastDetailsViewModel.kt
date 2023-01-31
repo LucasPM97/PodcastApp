@@ -62,8 +62,8 @@ class PodcastDetailsViewModel(
 
     data class PodcastDetailsUiState(
         val podcastDetails: PodcastDetails?,
-        val isLoading: Boolean,
-        val errorMessage: String
+        val isLoading: Boolean = false,
+        val errorMessage: String? = null
     )
 
 }
