@@ -14,35 +14,36 @@ class GetPodcastDetailsUseCase(
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
 
-    suspend operator fun invoke(podcastUuid: String): PodcastDetails? = withContext(dispatcher) {
+    suspend operator fun invoke(podcastUuid: String): ApiResponse<PodcastDetails> =
+        withContext(dispatcher) {
 
-        val localPodcastDetails: PodcastDetails? = null
-        podcastRepository.getLocalPodcastDetails(podcastUuid)
+            val localPodcastDetails: PodcastDetails? = podcastRepository.getLocalPodcastDetails(podcastUuid)
 
-        if (localPodcastDetails != null) {
-            val podcastEpisodes = episodeRepository.getEpisodesByPodcast(podcastUuid)
-            return@withContext localPodcastDetails.copy(
-                episodes = podcastEpisodes
-            )
-        }
+            if (localPodcastDetails != null) {
+                val podcastEpisodes = episodeRepository.getEpisodesByPodcast(podcastUuid)
+                return@withContext ApiResponse.Success(
+                    localPodcastDetails.copy(
+                        episodes = podcastEpisodes
+                    )
+                )
 
-        val response = podcastRepository.getRemotePodcastDetails(podcastUuid)
+            }
 
-        return@withContext when (response) {
-            is ApiResponse.Success -> {
-                response.data?.let { data ->
-                    podcastRepository.storePodcastDetails(data)
-                    data.episodes?.let {
-                        episodeRepository.storeEpisodes(it)
+            val response = podcastRepository.getRemotePodcastDetails(podcastUuid)
+
+            when (response) {
+                is ApiResponse.Success -> {
+                    response.data?.let { data ->
+                        podcastRepository.storePodcastDetails(data)
+                        data.episodes?.let {
+                            episodeRepository.storeEpisodes(it)
+                        }
                     }
                 }
-                response.data
+                else -> {}
             }
-            is ApiResponse.Error -> {
-                // Show error message
-                null
-            }
+
+            return@withContext response
         }
-    }
 
 }
