@@ -1,9 +1,6 @@
 package com.example.podcast_details_ui.screens.podcastDetails
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
@@ -15,6 +12,7 @@ import com.example.podcast_details_domain.models.Episode
 import com.example.podcast_details_domain.models.Genre
 import com.example.podcast_details_domain.models.PodcastDetails
 import com.example.podcast_details_ui.screens.podcastDetails.components.Header
+import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent
 import org.koin.androidx.compose.getViewModel
 import kotlin.random.Random
 
@@ -49,6 +47,7 @@ fun ScreenContent(
                 title = if (showHeaderTitle) state.podcastDetails?.name
                 else null
             )
+            Spacer(modifier = Modifier.height(30.dp))
             if (state.isLoading) {
                 //TODO: Show loading
             } else if (state.podcastDetails != null) {
@@ -61,11 +60,6 @@ fun ScreenContent(
     }
 
 
-}
-
-@Composable
-fun PodcastDetailsContent(podcastDetails: PodcastDetails) {
-    
 }
 
 

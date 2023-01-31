@@ -44,7 +44,7 @@ fun Header(
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = Typography.titleSmall,
+            style = MaterialTheme.typography.titleSmall,
             color = tintColor
         )
     }
