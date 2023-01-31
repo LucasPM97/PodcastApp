@@ -15,12 +15,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.core_ui.theme.PodcastAppTheme
+import com.example.core_ui.theme.Typography
 
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
-    backOnClick: () -> Unit = {},
-    title: String? = null
+    title: String? = null,
+    tintColor: Color = MaterialTheme.colorScheme.secondary,
+    backOnClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -31,8 +34,8 @@ fun Header(
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                tint = Color.White,
-                contentDescription = "navigate back"
+                contentDescription = "navigate back",
+                tint = tintColor
             )
         }
         Text(
@@ -41,7 +44,8 @@ fun Header(
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = Color.White
+            style = Typography.titleSmall,
+            color = tintColor
         )
     }
 }
@@ -49,7 +53,7 @@ fun Header(
 @Preview
 @Composable
 fun PreviewHeader() {
-    MaterialTheme {
+    PodcastAppTheme {
         Header(
             modifier = Modifier.fillMaxWidth()
         )
@@ -59,7 +63,7 @@ fun PreviewHeader() {
 @Preview
 @Composable
 fun PreviewHeaderWithTitle() {
-    MaterialTheme {
+    PodcastAppTheme {
         Header(
             modifier = Modifier.fillMaxWidth(),
             title = "This American Life"
@@ -68,11 +72,10 @@ fun PreviewHeaderWithTitle() {
 }
 
 
-
 @Preview
 @Composable
 fun PreviewHeaderWithLongTitle() {
-    MaterialTheme {
+    PodcastAppTheme {
         Header(
             modifier = Modifier.fillMaxWidth(),
             title = "This American Life long long long long long long long long title"
