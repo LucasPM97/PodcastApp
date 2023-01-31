@@ -3,11 +3,13 @@ package com.example.podcast_details_ui.screens.podcastDetails
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.models.Episode
 import com.example.podcast_details_domain.models.Genre
@@ -29,17 +31,33 @@ fun PodcastDetailsScreen(
 fun ScreenContent(
     state: PodcastDetailsViewModel.PodcastDetailsUiState
 ) {
+    val showHeaderTitle by remember {
+        mutableStateOf(false)
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
-        if (state.isLoading) {
-            //TODO: Show loading
-        } else if (state.podcastDetails != null) {
-            PodcastDetailsContent(state.podcastDetails)
-        } else {
-            //TODO: Show error message
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        ) {
+            Header(
+                modifier = Modifier.fillMaxWidth(),
+                title = if (showHeaderTitle) state.podcastDetails?.name
+                else null
+            )
+            if (state.isLoading) {
+                //TODO: Show loading
+            } else if (state.podcastDetails != null) {
+                PodcastDetailsContent(state.podcastDetails)
+            } else {
+                //TODO: Show error message
+            }
         }
+
     }
 
 
@@ -47,16 +65,7 @@ fun ScreenContent(
 
 @Composable
 fun PodcastDetailsContent(podcastDetails: PodcastDetails) {
-    val showHeaderTitle by remember {
-        mutableStateOf(true)
-    }
-    Column {
-        Header(
-            modifier = Modifier.fillMaxWidth(),
-            title = if (showHeaderTitle) podcastDetails.name
-            else null
-        )
-    }
+    
 }
 
 
