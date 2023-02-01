@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.components.AppAsyncImage
+import com.example.core_ui.extensions.roundedRectangle
 
 @Composable
 fun PodcastImage(imageUrl: String?, podcastName: String?) {
@@ -15,9 +16,7 @@ fun PodcastImage(imageUrl: String?, podcastName: String?) {
         modifier = Modifier
             .fillMaxWidth()
             .height(360.dp)
-            .clip(
-                RoundedCornerShape(20.dp)
-            ),
+            .roundedRectangle(20.dp),
         imageUrl = imageUrl ?: "",
         contentDescription = podcastName ?: ""
     )

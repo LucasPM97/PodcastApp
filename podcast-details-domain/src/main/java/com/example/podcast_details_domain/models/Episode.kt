@@ -4,7 +4,7 @@ data class Episode(
     val podcastUuid: String?,
     val uuid: String?,
     val name: String?,
-    val imageUrl: String?,
+    val imageUrl: String,
     val description: String?,
     val audioUrl: String?,
     val duration: Int?,

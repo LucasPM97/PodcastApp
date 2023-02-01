@@ -58,6 +58,13 @@ fun PodcastDetailsContent(
         ) {
             //TODO: Scroll to Episodes list start
         }
+        podcastDetails.episodes?.let { episodes ->
+            SpaceBetween()
+            EpisodesList(
+                episodes = episodes,
+                modifier = Modifier
+            )
+        }
     }
 }
 
@@ -87,6 +94,7 @@ fun ScrollToEpisodesButton(
         }
     }
 }
+
 
 @Preview
 @Composable

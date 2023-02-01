@@ -56,7 +56,7 @@ class LocalEpisodeDataSource : ILocalEpisodeDataSource {
         podcastUuid = "8c9998d7-7114-4514-ab17-1a0ad05f73fc",
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a2",
         name = "Case #1 Britney",
-        imageUrl = null,
+        imageUrl = "https://files.thisamericanlife.org/sites/all/themes/thislife/img/tal-name-1400x1400.png",
         datePublished = 1432958400,
         description = "The Case:  Andrea's a writer no one reads. Then she makes a shocking discovery. The Facts:  Mystery Show is produced by myself, Alex Blumberg, Melinda Shopsin and Eric Mennel. Producing help from Chris Neary and Wendy Dorr. Eli Horowitz is contributing ed",
         audioUrl = "https://traffic.megaphone.fm/GLT5025099642.mp3?updated=1511216902",
