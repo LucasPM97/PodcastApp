@@ -29,40 +29,40 @@ fun ActionButtons(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        PlayLastEpisodeButton(
-            lastEpisode,
-            onPlayEpisode = onPlayEpisode,
-            modifier = Modifier.weight(1f),
-        )
+        if (lastEpisode?.audioUrl != null) {
+            PlayLastEpisodeButton(
+                lastEpisode,
+                onPlayEpisode = onPlayEpisode,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+        }
         ShareButton()
-        Spacer(modifier = Modifier.width(30.dp))
+        Spacer(modifier = Modifier.width(20.dp))
         FavButton(onFav, fav)
     }
 }
 
 @Composable
 private fun PlayLastEpisodeButton(
-    lastEpisode: Episode?,
+    lastEpisode: Episode,
     modifier: Modifier = Modifier,
     onPlayEpisode: (String) -> Unit
 ) {
-    if (lastEpisode?.audioUrl != null) {
-        Button(
-            onClick = {
-                onPlayEpisode(lastEpisode.audioUrl!!)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            ),
-            modifier = modifier
-        ) {
-            Text(
-                text = "Play",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
-        Spacer(modifier = Modifier.width(30.dp))
+    Button(
+        onClick = {
+            onPlayEpisode(lastEpisode.audioUrl!!)
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        ),
+        modifier = modifier
+    ) {
+        Text(
+            text = "Play",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
     }
 }
 

@@ -1,16 +1,25 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core_ui.components.AppAsyncImage
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_domain.models.PodcastDetails
+
+@Composable
+fun SpaceBetween() {
+    Spacer(modifier = Modifier.height(20.dp))
+}
 
 @Composable
 fun PodcastDetailsContent(
@@ -25,13 +34,13 @@ fun PodcastDetailsContent(
             imageUrl = podcastDetails.imageUrl,
             podcastName = podcastDetails.name
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        SpaceBetween()
         PodcastTitle(
             podcastName = podcastDetails.name ?: "",
             authorName = podcastDetails.authorName
         )
         Description(podcastDetails.description)
-        Spacer(modifier = Modifier.height(20.dp))
+        SpaceBetween()
         ActionButtons(
             lastEpisode = podcastDetails.episodes?.last(),
             fav = false,
@@ -43,21 +52,40 @@ fun PodcastDetailsContent(
             },
             modifier = Modifier.fillMaxWidth()
         )
+        SpaceBetween()
+        ScrollToEpisodesButton(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            //TODO: Scroll to Episodes list start
+        }
     }
 }
 
 @Composable
-private fun PodcastImage(imageUrl: String?, podcastName: String?) {
-    AppAsyncImage(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(360.dp)
-            .clip(
-                RoundedCornerShape(20.dp)
-            ),
-        imageUrl = imageUrl ?: "",
-        contentDescription = podcastName ?: ""
-    )
+fun ScrollToEpisodesButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Row(
+            modifier = Modifier.clickable {
+                onClick()
+            },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "See all episodes",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = "See all episodes"
+            )
+        }
+    }
 }
 
 @Preview
