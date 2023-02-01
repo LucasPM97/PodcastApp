@@ -40,18 +40,22 @@ fun ScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
         ) {
             Header(
                 modifier = Modifier.fillMaxWidth(),
                 title = if (showHeaderTitle) state.podcastDetails?.name
                 else null
             )
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             if (state.isLoading) {
                 //TODO: Show loading
             } else if (state.podcastDetails != null) {
-                PodcastDetailsContent(state.podcastDetails)
+                PodcastDetailsContent(
+                    podcastDetails = state.podcastDetails,
+                    modifier = Modifier.padding(
+                        horizontal = 20.dp
+                    )
+                )
             } else {
                 //TODO: Show error message
             }
