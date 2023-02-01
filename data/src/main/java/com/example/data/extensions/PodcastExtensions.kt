@@ -15,7 +15,8 @@ fun PodcastDetailsQuery.GetPodcastSeries.toDomainPodcast(): PodcastDetails {
         websiteUrl,
         authorName,
         episodes?.toEpisodeDomainList(
-            podcastUuid = uuid ?: ""
+            podcastUuid = uuid ?: "",
+            podcastImageUrl = imageUrl
         )
     )
 }

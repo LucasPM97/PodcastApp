@@ -18,17 +18,26 @@ val mockPodcast = PodcastDetails(
     ),
     websiteUrl = null,
     authorName = "Juan Menguez",
-    episodes = listOf(
-        mockEpisode(),
-        mockEpisode().copy(
-            uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-            name = "Case #2 Britney"
-        ),
-        mockEpisode().copy(
-            uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-            name = "Case #2 Britney"
-        ),
-    )
+    episodes = mockEpisodesList()
+)
+
+fun mockEpisodesList() = listOf(
+    mockEpisode().copy(
+        duration = 2964,
+        seasonNumber = null,
+        episodeNumber = null,
+        watched = true,
+        timeWatched = 2964
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney",
+        duration = 6000
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney"
+    ),
 )
 
 fun mockEpisode(
@@ -37,7 +46,7 @@ fun mockEpisode(
     podcastUuid = "8c9998d7-7114-4514-ab17-1a0ad05f73fc",
     uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a2",
     name = "Case #1 Britney",
-    imageUrl = null,
+    imageUrl = "",
     datePublished = 1432958400,
     description = "The Case:  Andrea's a writer no one reads. Then she makes a shocking discovery. The Facts:  Mystery Show is produced by myself, Alex Blumberg, Melinda Shopsin and Eric Mennel. Producing help from Chris Neary and Wendy Dorr. Eli Horowitz is contributing ed",
     audioUrl = "https://traffic.megaphone.fm/GLT5025099642.mp3?updated=1511216902",
