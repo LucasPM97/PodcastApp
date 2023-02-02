@@ -1,6 +1,9 @@
 package com.example.podcast_details_ui.screens.podcastDetails
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
@@ -10,12 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_domain.models.Episode
-import com.example.podcast_details_domain.models.Genre
-import com.example.podcast_details_domain.models.PodcastDetails
-import com.example.podcast_details_ui.screens.podcastDetails.components.Header
-import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent
+import com.example.podcast_details_ui.screens.podcastDetails.components.*
 import org.koin.androidx.compose.getViewModel
-import kotlin.random.Random
 
 @Composable
 fun PodcastDetailsScreen(
@@ -38,33 +37,47 @@ fun ScreenContent(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        Column {
             Header(
                 modifier = Modifier.fillMaxWidth(),
                 title = if (showHeaderTitle) state.podcastDetails?.name
                 else null
             )
-            Spacer(modifier = Modifier.height(20.dp))
-            if (state.isLoading) {
-                //TODO: Show loading
-            } else if (state.podcastDetails != null) {
-                PodcastDetailsContent(
-                    podcastDetails = state.podcastDetails,
-                    modifier = Modifier.padding(
-                        horizontal = 20.dp
-                    )
-                )
-            } else {
-                //TODO: Show error message
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)
+            ) {
+                item {
+                    if (state.isLoading) {
+                        //TODO: Show loading
+                    } else if (state.podcastDetails != null) {
+                        SpaceBetween()
+                        PodcastDetailsContent(
+                            podcastDetails = state.podcastDetails,
+                        )
+                    } else {
+                        //TODO: Show error message
+                    }
+                }
+                state.podcastDetails?.episodes?.let { episodes ->
+                    LazyEpisodesList(episodes)
+                }
             }
         }
-
     }
+}
 
-
+// Forced to do this because the NestedScroll on Compose doesn't work as it should
+private fun LazyListScope.LazyEpisodesList(episodes: List<Episode>) {
+    items(episodes) {
+        EpisodeItem(
+            episode = it,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        SpaceBetween()
+    }
 }
 
 @Preview
