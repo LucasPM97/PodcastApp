@@ -2,6 +2,8 @@ package com.example.podcast_details_ui.screens.podcastDetails.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
@@ -28,7 +30,6 @@ fun PodcastDetailsContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 10.dp)
     ) {
         PodcastImage(
             imageUrl = podcastDetails.imageUrl,
@@ -58,13 +59,8 @@ fun PodcastDetailsContent(
         ) {
             //TODO: Scroll to Episodes list start
         }
-        podcastDetails.episodes?.let { episodes ->
-            SpaceBetween()
-            EpisodesList(
-                episodes = episodes,
-                modifier = Modifier
-            )
-        }
+        SpaceBetween()
+
     }
 }
 
