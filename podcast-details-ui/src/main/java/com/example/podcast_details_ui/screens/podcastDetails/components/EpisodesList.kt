@@ -23,7 +23,8 @@ fun EpisodesList(
         items(episodes) {
             EpisodeItem(
                 episode = it,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                height = 80
             )
         }
     }
