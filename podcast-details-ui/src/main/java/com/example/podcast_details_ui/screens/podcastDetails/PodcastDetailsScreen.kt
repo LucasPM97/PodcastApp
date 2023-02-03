@@ -1,14 +1,11 @@
 package com.example.podcast_details_ui.screens.podcastDetails
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.extensions.calculateDominantColor
@@ -17,6 +14,7 @@ import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_ui.screens.podcastDetails.components.Header
 import com.example.podcast_details_ui.screens.podcastDetails.components.LoadingScreen
 import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent
+import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsGradient
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -52,25 +50,16 @@ fun ScreenContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            AnimatedVisibility(
-                visible = podcastTitleNotVisible,
-                enter = slideInVertically(),
-                exit = fadeOut()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                listOf(
-                                    dominantColor,
-                                    primaryColor
-                                )
-                            )
-                        )
-                )
-            }
+            PodcastDetailsGradient(
+                isVisible = podcastTitleNotVisible,
+                colors = listOf(
+                    dominantColor,
+                    primaryColor
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
             Column {
                 Header(
                     modifier = Modifier.fillMaxWidth(),
