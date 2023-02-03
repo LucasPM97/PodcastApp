@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_domain.models.Episode
@@ -41,7 +42,7 @@ fun PodcastDetailsContent(
         }
     }
 
-    var listHeight by remember { mutableStateOf(0) }
+    var listHeightInPx by remember { mutableStateOf(0) }
 
     val episodeItemHeightInPx = LocalDensity.current.run { EPISODE_ITEM_SIZE_PLUS_SPACER_DP.toPx() }
     val firstEpisodeItemOffsetInPx =
@@ -51,7 +52,7 @@ fun PodcastDetailsContent(
         state = scrollState,
         modifier = modifier
             .onSizeChanged {
-                listHeight = it.height
+                listHeightInPx = it.height
             },
     ) {
         item {
@@ -89,37 +90,13 @@ fun PodcastDetailsContent(
         }
         podcastDetails.episodes?.let { episodes ->
             LazyEpisodesList(episodes)
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .fillParentMaxHeight(
-                            getNeededFractionToFillParent(
-                                episodeItemHeightInPx = episodeItemHeightInPx,
-                                episodesSize = episodes.size,
-                                offset = firstEpisodeItemOffsetInPx,
-                                listHeight = listHeight
-                            )
-                        )
-                )
-            }
+            fillLazyColumn(
+                spaceAlreadyOccupiedInPx = episodeItemHeightInPx * episodes.size + firstEpisodeItemOffsetInPx,
+                listHeightInPx = listHeightInPx.toFloat()
+            )
         }
 
     }
-}
-
-fun getNeededFractionToFillParent(
-    episodeItemHeightInPx: Float,
-    episodesSize: Int,
-    offset: Float,
-    listHeight: Int
-): Float {
-    val episodesTotalHeightInPx = episodeItemHeightInPx * episodesSize + offset
-
-    //If there's no space to fill, returns 0
-    if (episodesTotalHeightInPx >= listHeight) return 0f
-
-    val spaceAlreadyOccupied = episodesTotalHeightInPx / listHeight
-    return 1 - spaceAlreadyOccupied
 }
 
 @Composable
