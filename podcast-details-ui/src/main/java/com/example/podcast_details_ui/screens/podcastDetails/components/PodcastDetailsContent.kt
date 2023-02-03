@@ -1,18 +1,9 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,7 +80,7 @@ fun PodcastDetailsContent(
             SpaceBetween()
         }
         podcastDetails.episodes?.let { episodes ->
-            LazyEpisodesList(episodes)
+            renderLazyEpisodesList(episodes)
             fillLazyColumn(
                 spaceAlreadyOccupiedInPx = episodeItemHeightInPx * episodes.size + firstEpisodeItemOffsetInPx,
                 listHeightInPx = listHeightInPx.toFloat()
@@ -99,40 +90,13 @@ fun PodcastDetailsContent(
     }
 }
 
-@Composable
-fun ScrollToEpisodesButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier.clickable {
-                onClick()
-            },
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "See all episodes",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown,
-                contentDescription = "See all episodes"
-            )
-        }
-    }
-}
-
 
 const val EPISODE_ITEM_SIZE = 80
 val FIRST_EPISODE_ITEM_OFFSET_DP = 10.dp
 val EPISODE_ITEM_SIZE_PLUS_SPACER_DP = (EPISODE_ITEM_SIZE).dp + 20.dp
 
 // Forced to do this because the NestedScroll on Compose doesn't work as it should
-private fun LazyListScope.LazyEpisodesList(episodes: List<Episode>) {
+private fun LazyListScope.renderLazyEpisodesList(episodes: List<Episode>) {
     items(episodes) {
         EpisodeItem(
             episode = it,
