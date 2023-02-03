@@ -8,17 +8,13 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core_ui.components.SpaceVertical20
 import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_domain.models.Episode
 import com.example.podcast_details_domain.models.PodcastDetails
-import kotlinx.coroutines.launch
 
-@Composable
-fun SpaceBetween() {
-    Spacer(modifier = Modifier.height(20.dp))
-}
 
 @Composable
 fun PodcastDetailsContent(
@@ -40,12 +36,12 @@ fun PodcastDetailsContent(
             },
     ) {
         item {
-            SpaceBetween()
+            SpaceVertical20()
             PodcastImage(
                 imageUrl = podcastDetails.imageUrl,
                 podcastName = podcastDetails.name
             )
-            SpaceBetween()
+            SpaceVertical20()
             PodcastTitle(
                 podcastName = podcastDetails.name ?: "",
                 authorName = podcastDetails.authorName
@@ -53,7 +49,7 @@ fun PodcastDetailsContent(
         }
         item {
             Description(podcastDetails.description)
-            SpaceBetween()
+            SpaceVertical20()
             ActionButtons(
                 lastEpisode = podcastDetails.episodes?.last(),
                 fav = false,
@@ -65,14 +61,14 @@ fun PodcastDetailsContent(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            SpaceBetween()
+            SpaceVertical20()
             podcastDetails.episodes?.let { _ ->
                 ScrollToEpisodesButton(
                     modifier = Modifier.fillMaxWidth(),
                     scrollState = scrollState,
                     firstEpisodeItemIndex = 2
                 )
-                SpaceBetween()
+                SpaceVertical20()
             }
         }
         podcastDetails.episodes?.let { episodes ->
@@ -100,7 +96,7 @@ private fun LazyListScope.renderLazyEpisodesList(episodes: List<Episode>) {
             modifier = Modifier
                 .fillMaxWidth()
         )
-        SpaceBetween()
+        SpaceVertical20()
     }
 }
 
