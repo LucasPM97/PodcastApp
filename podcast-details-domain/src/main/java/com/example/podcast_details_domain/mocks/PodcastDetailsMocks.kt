@@ -36,55 +36,46 @@ fun mockEpisodesList() = listOf(
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney"
-    ),
-    mockEpisode().copy(
-        duration = 2964,
-        seasonNumber = null,
-        episodeNumber = null,
-        watched = true,
-        timeWatched = 2964
+        name = "Case #3 Britney"
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney",
+        name = "Case #4 Britney"
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #5 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney"
-    ),
-    mockEpisode().copy(
-        duration = 2964,
-        seasonNumber = null,
-        episodeNumber = null,
-        watched = true,
-        timeWatched = 2964
+        name = "Case #6 Britney"
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney",
+        name = "Case #7 Britney"
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #8 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney"
-    ),
-    mockEpisode().copy(
-        duration = 2964,
-        seasonNumber = null,
-        episodeNumber = null,
-        watched = true,
-        timeWatched = 2964
+        name = "Case #9 Britney"
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney",
+        name = "Case #10 Britney"
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #11 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-        name = "Case #2 Britney"
+        name = "Case #12 Britney"
     ),
 )
 

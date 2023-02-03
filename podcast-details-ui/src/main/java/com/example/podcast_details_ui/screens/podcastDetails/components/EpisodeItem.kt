@@ -23,10 +23,12 @@ import com.example.podcast_details_domain.models.Episode
 @Composable
 fun EpisodeItem(
     episode: Episode,
-    modifier: Modifier = Modifier
+    height: Int,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier,
+        modifier
+            .height(height.dp),
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
@@ -39,7 +41,7 @@ fun EpisodeItem(
                 imageUrl = episode.imageUrl,
                 episodeDuration = episode.duration,
                 timeWatched = episode.timeWatched,
-                size = 80,
+                size = height,
                 modifier = Modifier
                     .roundedRectangle(20.dp)
             )
@@ -84,6 +86,7 @@ fun Preview_EpisodeItemFullWatched() {
                 watched = true,
                 timeWatched = 3000
             ),
+            height = 80
         )
     }
 }
@@ -98,6 +101,7 @@ fun Preview_EpisodeItemPartiallyWatched() {
                 watched = true,
                 timeWatched = 1500
             ),
+            height = 80
         )
     }
 }
@@ -112,6 +116,7 @@ fun Preview_EpisodeItemNoWatched() {
                 watched = false,
                 timeWatched = 0
             ),
+            height = 80
         )
     }
 }
