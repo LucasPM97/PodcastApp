@@ -38,6 +38,54 @@ fun mockEpisodesList() = listOf(
         uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
         name = "Case #2 Britney"
     ),
+    mockEpisode().copy(
+        duration = 2964,
+        seasonNumber = null,
+        episodeNumber = null,
+        watched = true,
+        timeWatched = 2964
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney",
+        duration = 6000
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney"
+    ),
+    mockEpisode().copy(
+        duration = 2964,
+        seasonNumber = null,
+        episodeNumber = null,
+        watched = true,
+        timeWatched = 2964
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney",
+        duration = 6000
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney"
+    ),
+    mockEpisode().copy(
+        duration = 2964,
+        seasonNumber = null,
+        episodeNumber = null,
+        watched = true,
+        timeWatched = 2964
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney",
+        duration = 6000
+    ),
+    mockEpisode().copy(
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        name = "Case #2 Britney"
+    ),
 )
 
 fun mockEpisode(
