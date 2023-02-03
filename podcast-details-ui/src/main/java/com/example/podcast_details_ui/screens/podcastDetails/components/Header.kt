@@ -41,7 +41,11 @@ fun Header(
                 tint = tintColor
             )
         }
-        AnimatedVisibility(visible = showTitle) {
+        AnimatedVisibility(
+            visible = showTitle,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             Text(
                 text = title ?: "",
                 modifier = Modifier.weight(1f),
