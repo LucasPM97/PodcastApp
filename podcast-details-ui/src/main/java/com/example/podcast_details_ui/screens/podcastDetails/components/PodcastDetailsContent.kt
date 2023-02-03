@@ -1,6 +1,9 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
-import androidx.compose.foundation.layout.*
+import android.graphics.drawable.Drawable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,12 +24,14 @@ fun PodcastDetailsContent(
     podcastDetails: PodcastDetails,
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),
+    imageLoaded: (Drawable) -> Unit = {}
 ) {
 
     var listHeightInPx by remember { mutableStateOf(0) }
     val episodeItemHeightInPx = LocalDensity.current.run { EPISODE_ITEM_SIZE_PLUS_SPACER_DP.toPx() }
     val firstEpisodeItemOffsetInPx =
         LocalDensity.current.run { FIRST_EPISODE_ITEM_OFFSET_DP.toPx() }
+
 
     LazyColumn(
         state = scrollState,
@@ -39,7 +44,8 @@ fun PodcastDetailsContent(
             SpaceVertical20()
             PodcastImage(
                 imageUrl = podcastDetails.imageUrl,
-                podcastName = podcastDetails.name
+                podcastName = podcastDetails.name,
+                imageLoaded = imageLoaded
             )
             SpaceVertical20()
             PodcastTitle(
