@@ -1,5 +1,6 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -16,14 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.core_ui.theme.PodcastAppTheme
-import com.example.core_ui.theme.Typography
 
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
     title: String? = null,
+    showTitle: Boolean = false,
     tintColor: Color = MaterialTheme.colorScheme.secondary,
-    backOnClick: () -> Unit = {}
+    backOnClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier,
@@ -38,15 +39,17 @@ fun Header(
                 tint = tintColor
             )
         }
-        Text(
-            text = title ?: "",
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.titleSmall,
-            color = tintColor
-        )
+        AnimatedVisibility(visible = showTitle) {
+            Text(
+                text = title ?: "",
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleSmall,
+                color = tintColor
+            )
+        }
     }
 }
 
@@ -55,7 +58,7 @@ fun Header(
 fun PreviewHeader() {
     PodcastAppTheme {
         Header(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -66,7 +69,7 @@ fun PreviewHeaderWithTitle() {
     PodcastAppTheme {
         Header(
             modifier = Modifier.fillMaxWidth(),
-            title = "This American Life"
+            title = "This American Life",
         )
     }
 }
@@ -78,7 +81,7 @@ fun PreviewHeaderWithLongTitle() {
     PodcastAppTheme {
         Header(
             modifier = Modifier.fillMaxWidth(),
-            title = "This American Life long long long long long long long long title"
+            title = "This American Life long long long long long long long long title",
         )
     }
 }

@@ -29,7 +29,9 @@ fun ScreenContent(
     val scrollState = rememberLazyListState()
 
     val showHeaderTitle by remember {
-        mutableStateOf(false)
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex > 0
+        }
     }
 
     Surface(
@@ -39,8 +41,8 @@ fun ScreenContent(
         Column {
             Header(
                 modifier = Modifier.fillMaxWidth(),
-                title = if (showHeaderTitle) state.podcastDetails?.name
-                else null
+                showTitle = showHeaderTitle,
+                title = state.podcastDetails?.name
             )
 
             if (state.isLoading) {
