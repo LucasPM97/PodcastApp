@@ -26,15 +26,8 @@ fun PodcastDetailsContent(
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    fun handleScrollToEpisodeList() {
-        coroutineScope.launch {
-            scrollState.animateScrollToItem(index = 2)
-        }
-    }
 
     var listHeightInPx by remember { mutableStateOf(0) }
-
     val episodeItemHeightInPx = LocalDensity.current.run { EPISODE_ITEM_SIZE_PLUS_SPACER_DP.toPx() }
     val firstEpisodeItemOffsetInPx =
         LocalDensity.current.run { FIRST_EPISODE_ITEM_OFFSET_DP.toPx() }
@@ -73,11 +66,14 @@ fun PodcastDetailsContent(
                 modifier = Modifier.fillMaxWidth()
             )
             SpaceBetween()
-            ScrollToEpisodesButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { handleScrollToEpisodeList() }
-            )
-            SpaceBetween()
+            podcastDetails.episodes?.let { _ ->
+                ScrollToEpisodesButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    scrollState = scrollState,
+                    firstEpisodeItemIndex = 2
+                )
+                SpaceBetween()
+            }
         }
         podcastDetails.episodes?.let { episodes ->
             renderLazyEpisodesList(episodes)
