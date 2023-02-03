@@ -1,5 +1,6 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -8,10 +9,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.PodcastAppTheme
@@ -38,9 +41,18 @@ fun PodcastDetailsContent(
         }
     }
 
+    var listHeight by remember { mutableStateOf(0) }
+
+    val episodeItemHeightInPx = LocalDensity.current.run { EPISODE_ITEM_SIZE_PLUS_SPACER_DP.toPx() }
+    val firstEpisodeItemOffsetInPx =
+        LocalDensity.current.run { FIRST_EPISODE_ITEM_OFFSET_DP.toPx() }
+
     LazyColumn(
         state = scrollState,
         modifier = modifier
+            .onSizeChanged {
+                listHeight = it.height
+            },
     ) {
         item {
             SpaceBetween()
@@ -77,8 +89,37 @@ fun PodcastDetailsContent(
         }
         podcastDetails.episodes?.let { episodes ->
             LazyEpisodesList(episodes)
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillParentMaxHeight(
+                            getNeededFractionToFillParent(
+                                episodeItemHeightInPx = episodeItemHeightInPx,
+                                episodesSize = episodes.size,
+                                offset = firstEpisodeItemOffsetInPx,
+                                listHeight = listHeight
+                            )
+                        )
+                )
+            }
         }
+
     }
+}
+
+fun getNeededFractionToFillParent(
+    episodeItemHeightInPx: Float,
+    episodesSize: Int,
+    offset: Float,
+    listHeight: Int
+): Float {
+    val episodesTotalHeightInPx = episodeItemHeightInPx * episodesSize + offset
+
+    //If there's no space to fill, returns 0
+    if (episodesTotalHeightInPx >= listHeight) return 0f
+
+    val spaceAlreadyOccupied = episodesTotalHeightInPx / listHeight
+    return 1 - spaceAlreadyOccupied
 }
 
 @Composable
@@ -109,11 +150,16 @@ fun ScrollToEpisodesButton(
 }
 
 
+const val EPISODE_ITEM_SIZE = 80
+val FIRST_EPISODE_ITEM_OFFSET_DP = 10.dp
+val EPISODE_ITEM_SIZE_PLUS_SPACER_DP = (EPISODE_ITEM_SIZE).dp + 20.dp
+
 // Forced to do this because the NestedScroll on Compose doesn't work as it should
 private fun LazyListScope.LazyEpisodesList(episodes: List<Episode>) {
     items(episodes) {
         EpisodeItem(
             episode = it,
+            height = EPISODE_ITEM_SIZE,
             modifier = Modifier
                 .fillMaxWidth()
         )
