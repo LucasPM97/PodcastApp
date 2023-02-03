@@ -15,6 +15,7 @@ import com.example.core_ui.extensions.calculateDominantColor
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_ui.screens.podcastDetails.components.Header
+import com.example.podcast_details_ui.screens.podcastDetails.components.LoadingScreen
 import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent
 import org.koin.androidx.compose.getViewModel
 
@@ -78,7 +79,7 @@ fun ScreenContent(
                 )
 
                 if (state.isLoading) {
-                    //TODO: Show loading
+                    LoadingScreen()
                 } else if (state.podcastDetails != null) {
 
                     PodcastDetailsContent(
