@@ -1,15 +1,10 @@
 package com.example.podcast_details_domain.useCases
 
 import com.example.core.models.ApiResponse
-import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
-import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.data_interfaces.repositories.IEpisodeRepository
+import com.example.core.data_interfaces.repositories.IPodcastRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.withContext
 
 class FetchPodcastDetailsUseCase(

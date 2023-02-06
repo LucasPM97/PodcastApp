@@ -1,6 +1,6 @@
 package com.example.data.datasource
 
-import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpisodeDataSource
+import com.example.core.data_interfaces.datasource.ILocalEpisodeDataSource
 import com.example.podcast_details_domain.mocks.mockEpisode
 import com.example.podcast_details_domain.mocks.mockEpisodesList
 import com.example.core.models.Episode

@@ -3,9 +3,9 @@ package com.example.data.repositories
 import com.example.core.models.ApiResponse
 import com.example.data.datasource.IRemotePodcastDataSource
 import com.example.data.extensions.toDomainPodcast
-import com.example.podcast_details_domain.data_interfaces.datasource.ILocalPodcastDataSource
-import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.data_interfaces.datasource.ILocalPodcastDataSource
+import com.example.core.data_interfaces.repositories.IPodcastRepository
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

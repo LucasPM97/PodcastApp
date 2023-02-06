@@ -1,7 +1,7 @@
-package com.example.podcast_details_domain.data_interfaces.repositories
+package com.example.core.data_interfaces.repositories
 
 import com.example.core.models.ApiResponse
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlinx.coroutines.flow.Flow
 
 interface IPodcastRepository {

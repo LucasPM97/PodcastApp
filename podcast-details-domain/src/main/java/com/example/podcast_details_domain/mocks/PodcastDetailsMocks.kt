@@ -2,7 +2,7 @@ package com.example.podcast_details_domain.mocks
 
 import com.example.core.models.Episode
 import com.example.core.models.Genre
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlin.random.Random
 
 val mockPodcast = PodcastDetails(
