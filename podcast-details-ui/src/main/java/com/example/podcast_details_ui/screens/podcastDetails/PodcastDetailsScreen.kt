@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.core_ui.extensions.calculateDominantColor
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
@@ -19,16 +20,21 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun PodcastDetailsScreen(
-    viewModel: PodcastDetailsViewModel = getViewModel()
+    viewModel: PodcastDetailsViewModel = getViewModel(),
+    openPodcastPlayer: (episodeUuid: String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    ScreenContent(state)
+    ScreenContent(
+        state,
+        openPodcastPlayer
+    )
 }
 
 @Composable
 fun ScreenContent(
-    state: PodcastDetailsViewModel.PodcastDetailsUiState
+    state: PodcastDetailsViewModel.PodcastDetailsUiState,
+    openPodcastPlayer: (episodeUuid: String) -> Unit = {}
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     var dominantColor by remember {
@@ -79,6 +85,7 @@ fun ScreenContent(
                                 dominantColor = color
                             }
                         },
+                        openPodcastPlayer = openPodcastPlayer,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 20.dp)
