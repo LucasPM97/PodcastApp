@@ -17,6 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_ui.screens.podcastDetails.PodcastDetailsScreen
+import com.example.podcast_player_ui.components.EpisodePlayerView
+import com.example.podcast_player_ui.models.ComponentSize
 
 class MainActivity : ComponentActivity() {
 
@@ -26,25 +28,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             PodcastAppTheme {
 
-                var showBottomBar by remember {
-                    mutableStateOf(false)
+                var playerSize by remember {
+                    mutableStateOf(ComponentSize.None)
                 }
 
                 Scaffold(
                     bottomBar = {
-                        if (showBottomBar) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(MaterialTheme.colorScheme.primary)
-                            )
-                        }
+                        EpisodePlayerView(
+                            playerSize,
+                            onSizeChanged = { newSize ->
+                                playerSize = newSize
+                            }
+                        )
                     }
                 ) {
                     PodcastDetailsScreen(
                         modifier = Modifier.padding(it),
                         openPodcastPlayer = {
-                            showBottomBar = !showBottomBar
+                            playerSize = ComponentSize.Small
                         }
                     )
                 }
