@@ -35,7 +35,6 @@ dependencies {
     //Modules
     implementation project(':core')
     implementation project(':shared-apollo')
-    implementation project(':podcast-details-domain')
 
     // Koin: Dependency Injection
     implementation "io.insert-koin:koin-core:$koin_version"

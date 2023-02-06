@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.PodcastAppTheme
-import com.example.podcast_details_domain.mocks.mockEpisodesList
+import com.example.core.mocks.mockEpisodesList
 import com.example.core.models.Episode
 
 @Composable

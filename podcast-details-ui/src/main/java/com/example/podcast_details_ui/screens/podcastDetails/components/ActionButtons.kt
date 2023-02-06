@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core_ui.theme.PodcastAppTheme
-import com.example.podcast_details_domain.mocks.mockEpisode
+import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 
 @Composable
