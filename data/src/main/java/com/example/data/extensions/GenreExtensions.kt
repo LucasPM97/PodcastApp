@@ -4,8 +4,8 @@ import com.example.core.type.Genre
 
 
 
-fun List<Genre?>.toGenreDomainList(): List<com.example.podcast_details_domain.models.Genre> {
-    val mappedGenre = mutableListOf<com.example.podcast_details_domain.models.Genre>()
+fun List<Genre?>.toGenreDomainList(): List<com.example.core.models.Genre> {
+    val mappedGenre = mutableListOf<com.example.core.models.Genre>()
 
     val anyGenreWithSameText: (String) -> Boolean = { dataGenreName ->
         mappedGenre.any { domainGenre ->
@@ -17,7 +17,7 @@ fun List<Genre?>.toGenreDomainList(): List<com.example.podcast_details_domain.mo
         dataGenre?.let {
             val isSubCategory = anyGenreWithSameText(dataGenre.name)
 
-            val domainGenre = com.example.podcast_details_domain.models.Genre(
+            val domainGenre = com.example.core.models.Genre(
                 genreText = dataGenre.getGenreText(isSubCategory),
                 genreRemoteEnumString = dataGenre.name
             )
@@ -29,7 +29,7 @@ fun List<Genre?>.toGenreDomainList(): List<com.example.podcast_details_domain.mo
     return mappedGenre
 }
 
-fun com.example.podcast_details_domain.models.Genre.toDataGenre(): Genre {
+fun com.example.core.models.Genre.toDataGenre(): Genre {
     return Genre.valueOf(genreRemoteEnumString)
 }
 

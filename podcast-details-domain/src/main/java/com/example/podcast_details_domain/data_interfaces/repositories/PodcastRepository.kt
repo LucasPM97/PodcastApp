@@ -1,6 +1,6 @@
 package com.example.podcast_details_domain.data_interfaces.repositories
 
-import com.example.podcast_details_domain.models.ApiResponse
+import com.example.core.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
 
 interface IPodcastRepository {

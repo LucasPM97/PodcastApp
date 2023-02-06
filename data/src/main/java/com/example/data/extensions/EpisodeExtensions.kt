@@ -1,7 +1,7 @@
 package com.example.data.extensions
 
 import com.example.data.PodcastDetailsQuery
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 
 // This only works if all episodes are from the same Podcast
 fun List<PodcastDetailsQuery.Episode?>.toEpisodeDomainList(

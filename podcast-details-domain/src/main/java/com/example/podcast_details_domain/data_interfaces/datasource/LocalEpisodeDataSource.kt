@@ -1,6 +1,6 @@
 package com.example.podcast_details_domain.data_interfaces.datasource
 
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 
 interface ILocalEpisodeDataSource {
     suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode>

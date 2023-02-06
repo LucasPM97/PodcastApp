@@ -1,5 +1,8 @@
 package com.example.podcast_details_domain.models
 
+import com.example.core.models.Episode
+import com.example.core.models.Genre
+
 data class PodcastDetails(
     val uuid: String?,
     val name: String?,

@@ -15,7 +15,7 @@ import com.example.core_ui.components.SpaceVertical20
 import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 import com.example.podcast_details_domain.models.PodcastDetails
 
 

@@ -1,8 +1,8 @@
 package com.example.podcast_details_domain.useCases
 
+import com.example.core.models.ApiResponse
 import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
 import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
-import com.example.podcast_details_domain.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
