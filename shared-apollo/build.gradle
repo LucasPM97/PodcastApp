@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.data'
+    namespace 'com.example.shared_apollo'
     compileSdk 33
 
     defaultConfig {
@@ -32,26 +32,12 @@ android {
 }
 
 dependencies {
-    //Modules
-    implementation project(':core')
-    implementation project(':shared-apollo')
-    implementation project(':podcast-details-domain')
-
-    // Koin: Dependency Injection
-    implementation "io.insert-koin:koin-core:$koin_version"
-    implementation "io.insert-koin:koin-androidx-workmanager:$koin_android_version"
-    implementation "io.insert-koin:koin-androidx-compose:$koin_android_compose_version"
-
     // Apollo GraphQL Impl
     implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
-    apolloMetadata project(':shared-apollo')
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
+
 apollo {
-    packageName.set("com.example.data")
+    packageName.set("com.example.core")
     generateApolloMetadata.set(true)
 }

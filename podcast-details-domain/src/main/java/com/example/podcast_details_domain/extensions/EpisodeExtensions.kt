@@ -11,7 +11,7 @@ fun Episode.durationText(): String {
         DurationUnit.SECONDS
     )
 
-    realDuration.toComponents { hours, minutes, seconds, nanoseconds ->
+    realDuration.toComponents { hours, minutes, seconds, _ ->
         if (minutes > 0) {
             val minutesFormated = if (minutes > 9) minutes.toString() else "0$minutes"
             return "$hours:$minutesFormated"
@@ -28,7 +28,7 @@ fun Episode.datePublishedText(): String {
         DurationUnit.SECONDS
     )
 
-    realDuration.toComponents { days, hours, minutes, seconds, nanoseconds ->
+    realDuration.toComponents { days, hours, minutes, _, _ ->
         if (days > 0) return "$days days ago"
         else if (hours > 0) return "$hours hours ago"
         else if (minutes > 4) return "$minutes minutes ago"

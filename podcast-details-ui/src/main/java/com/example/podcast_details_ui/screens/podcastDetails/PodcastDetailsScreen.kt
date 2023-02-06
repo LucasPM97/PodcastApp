@@ -20,6 +20,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun PodcastDetailsScreen(
+    modifier: Modifier = Modifier,
     viewModel: PodcastDetailsViewModel = getViewModel(),
     openPodcastPlayer: (episodeUuid: String) -> Unit
 ) {
@@ -27,6 +28,7 @@ fun PodcastDetailsScreen(
 
     ScreenContent(
         state,
+        modifier,
         openPodcastPlayer
     )
 }
@@ -34,6 +36,7 @@ fun PodcastDetailsScreen(
 @Composable
 fun ScreenContent(
     state: PodcastDetailsViewModel.PodcastDetailsUiState,
+    modifier: Modifier = Modifier,
     openPodcastPlayer: (episodeUuid: String) -> Unit = {}
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
@@ -50,7 +53,8 @@ fun ScreenContent(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
@@ -106,7 +110,7 @@ fun Preview_ScreenContent() {
         ScreenContent(
             state = PodcastDetailsViewModel.PodcastDetailsUiState(
                 podcastDetails = mockPodcast
-            )
+            ),
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.core.di
+package com.example.data.di
 
 import android.os.Looper
 import com.apollographql.apollo3.ApolloClient

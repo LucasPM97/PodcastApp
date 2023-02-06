@@ -15,8 +15,9 @@ dependencyResolutionManagement {
 rootProject.name = "PodcastApp"
 include ':app'
 include ':data'
-include ':core'
 include ':podcast-details-domain'
 include ':podcast-details-ui'
 include ':core-ui'
 include ':podcast-player-ui'
+include ':core'
+include ':shared-apollo'
