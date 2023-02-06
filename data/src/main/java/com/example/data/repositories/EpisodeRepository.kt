@@ -2,7 +2,7 @@ package com.example.data.repositories
 
 import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpisodeDataSource
 import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 
 class EpisodeRepository(
     private val localDataSource: ILocalEpisodeDataSource

@@ -3,8 +3,7 @@ package com.example.data.datasource
 import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpisodeDataSource
 import com.example.podcast_details_domain.mocks.mockEpisode
 import com.example.podcast_details_domain.mocks.mockEpisodesList
-import com.example.podcast_details_domain.models.Episode
-import kotlin.random.Random
+import com.example.core.models.Episode
 
 class LocalEpisodeDataSource : ILocalEpisodeDataSource {
     override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {

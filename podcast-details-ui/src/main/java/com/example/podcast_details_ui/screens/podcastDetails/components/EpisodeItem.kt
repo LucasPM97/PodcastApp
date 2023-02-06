@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.Gray
 import com.example.core_ui.theme.PodcastAppTheme
-import com.example.podcast_details_domain.extensions.datePublishedText
-import com.example.podcast_details_domain.extensions.durationText
-import com.example.podcast_details_domain.extensions.fullWatched
+import com.example.core.extensions.datePublishedText
+import com.example.core.extensions.durationText
+import com.example.core.extensions.fullWatched
 import com.example.podcast_details_domain.mocks.mockEpisode
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 
 @Composable
 fun EpisodeItem(

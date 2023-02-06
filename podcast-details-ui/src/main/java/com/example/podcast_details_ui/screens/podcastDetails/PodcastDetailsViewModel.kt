@@ -2,7 +2,7 @@ package com.example.podcast_details_ui.screens.podcastDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.podcast_details_domain.models.ApiResponse
+import com.example.core.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
 import com.example.podcast_details_domain.useCases.GetPodcastDetailsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

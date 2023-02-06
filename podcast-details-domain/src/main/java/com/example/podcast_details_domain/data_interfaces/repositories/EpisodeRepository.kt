@@ -1,6 +1,6 @@
 package com.example.podcast_details_domain.data_interfaces.repositories
 
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 
 interface IEpisodeRepository {
     suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode>

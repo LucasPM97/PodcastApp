@@ -1,4 +1,4 @@
-package com.example.podcast_details_domain.models
+package com.example.core.models
 
 data class Episode(
     val podcastUuid: String?,

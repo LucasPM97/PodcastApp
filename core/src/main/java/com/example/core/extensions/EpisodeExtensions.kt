@@ -1,6 +1,6 @@
-package com.example.podcast_details_domain.extensions
+package com.example.core.extensions
 
-import com.example.podcast_details_domain.models.Episode
+import com.example.core.models.Episode
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
