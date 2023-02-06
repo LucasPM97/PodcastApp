@@ -7,16 +7,19 @@ import com.example.podcast_details_domain.data_interfaces.datasource.ILocalPodca
 import com.example.podcast_details_domain.models.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class LocalPodcastDataSource(
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : ILocalPodcastDataSource {
-    override suspend fun getPodcastDetails(podcastUuid: String): PodcastDetails? =
-        withContext(dispatcher) {
-            // TODO: Return data from Database to avoid too many api calls
-            return@withContext mockLocalPodcastDetails().toDomainPodcastDetails()
-        }
+    override fun getPodcastDetails(podcastUuid: String): Flow<PodcastDetails?> = flow {
+        emit(mockLocalPodcastDetails())
+    }.map {
+        it.toDomainPodcastDetails()
+    }
 
     override suspend fun storePodcastDetails(podcast: PodcastDetails) = withContext(dispatcher) {
         //TODO: Store data into Database

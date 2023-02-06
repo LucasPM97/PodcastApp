@@ -8,10 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.core_ui.extensions.calculateDominantColor
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
+import com.example.podcast_details_domain.models.PodcastDetails
 import com.example.podcast_details_ui.screens.podcastDetails.components.Header
 import com.example.podcast_details_ui.screens.podcastDetails.components.LoadingScreen
 import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent
@@ -25,9 +25,11 @@ fun PodcastDetailsScreen(
     openPodcastPlayer: (episodeUuid: String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
+    val podcastDetails by viewModel.podcastDetails.collectAsState(initial = null)
 
     ScreenContent(
         state,
+        podcastDetails,
         modifier,
         openPodcastPlayer
     )
@@ -36,6 +38,7 @@ fun PodcastDetailsScreen(
 @Composable
 fun ScreenContent(
     state: PodcastDetailsViewModel.PodcastDetailsUiState,
+    podcastDetails: PodcastDetails?,
     modifier: Modifier = Modifier,
     openPodcastPlayer: (episodeUuid: String) -> Unit = {}
 ) {
@@ -74,15 +77,15 @@ fun ScreenContent(
                 Header(
                     modifier = Modifier.fillMaxWidth(),
                     showTitle = podcastTitleNotVisible,
-                    title = state.podcastDetails?.name
+                    title = podcastDetails?.name
                 )
 
                 if (state.isLoading) {
                     LoadingScreen()
-                } else if (state.podcastDetails != null) {
+                } else if (podcastDetails != null) {
 
                     PodcastDetailsContent(
-                        podcastDetails = state.podcastDetails,
+                        podcastDetails = podcastDetails,
                         scrollState = scrollState,
                         imageLoaded = {
                             it.calculateDominantColor { color ->
@@ -108,9 +111,8 @@ fun ScreenContent(
 fun Preview_ScreenContent() {
     PodcastAppTheme {
         ScreenContent(
-            state = PodcastDetailsViewModel.PodcastDetailsUiState(
-                podcastDetails = mockPodcast
-            ),
+            state = PodcastDetailsViewModel.PodcastDetailsUiState(),
+            podcastDetails = mockPodcast,
         )
     }
 }

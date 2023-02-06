@@ -4,46 +4,42 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.models.ApiResponse
 import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.podcast_details_domain.useCases.FetchPodcastDetailsUseCase
 import com.example.podcast_details_domain.useCases.GetPodcastDetailsUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PodcastDetailsViewModel(
-    val getPodcastDetails: GetPodcastDetailsUseCase
+    private val getPodcastDetails: GetPodcastDetailsUseCase,
+    private val fetchPodcastDetails: FetchPodcastDetailsUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<PodcastDetailsUiState>(
+    private val _uiState = MutableStateFlow(
         PodcastDetailsUiState(
-            podcastDetails = null,
             isLoading = false,
             errorMessage = ""
         )
     )
     val uiState = _uiState.asStateFlow()
 
+    val podcastDetails = getPodcastDetails(podcastUuid = "")
+
     init {
         viewModelScope.launch {
-            updatePodcastDetails()
+            fetchData(
+                podcasUuid = ""
+            )
         }
     }
 
-    private suspend fun updatePodcastDetails() {
+    private suspend fun fetchData(podcasUuid: String) {
         _uiState.update {
             it.copy(
                 isLoading = true
             )
         }
-        val response = getPodcastDetails("")
+        val response = fetchPodcastDetails(podcasUuid)
         when (response) {
-            is ApiResponse.Success -> {
-                _uiState.update {
-                    it.copy(
-                        podcastDetails = response.data
-                    )
-                }
-            }
             is ApiResponse.Error -> {
                 //TODO: Show error message
                 _uiState.update {
@@ -52,6 +48,7 @@ class PodcastDetailsViewModel(
                     )
                 }
             }
+            else -> {}
         }
         _uiState.update {
             it.copy(
@@ -61,7 +58,6 @@ class PodcastDetailsViewModel(
     }
 
     data class PodcastDetailsUiState(
-        val podcastDetails: PodcastDetails?,
         val isLoading: Boolean = false,
         val errorMessage: String? = null
     )
