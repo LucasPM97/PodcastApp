@@ -1,49 +1,32 @@
 package com.example.podcast_details_domain.useCases
 
-import com.example.core.models.ApiResponse
 import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
 import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
 import com.example.podcast_details_domain.models.PodcastDetails
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class GetPodcastDetailsUseCase(
     private val podcastRepository: IPodcastRepository,
     private val episodeRepository: IEpisodeRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
+    operator fun invoke(podcastUuid: String): Flow<PodcastDetails?> =
+        mergePodcastDetailsAndEpisodesLocalFlows(podcastUuid)
 
-    suspend operator fun invoke(podcastUuid: String): ApiResponse<PodcastDetails> =
-        withContext(dispatcher) {
 
-            val localPodcastDetails: PodcastDetails? = podcastRepository.getLocalPodcastDetails(podcastUuid)
+    private fun mergePodcastDetailsAndEpisodesLocalFlows(podcastUuid: String): Flow<PodcastDetails?> {
+        val localPodcastDetailsFlow =
+            podcastRepository.getLocalPodcastDetails(podcastUuid)
+        val podcastEpisodesFlow = episodeRepository.getEpisodesByPodcastFlow(podcastUuid)
 
-            if (localPodcastDetails != null) {
-                val podcastEpisodes = episodeRepository.getEpisodesByPodcast(podcastUuid)
-                return@withContext ApiResponse.Success(
-                    localPodcastDetails.copy(
-                        episodes = podcastEpisodes
-                    )
-                )
-
-            }
-
-            val response = podcastRepository.getRemotePodcastDetails(podcastUuid)
-
-            when (response) {
-                is ApiResponse.Success -> {
-                    response.data?.let { data ->
-                        podcastRepository.storePodcastDetails(data)
-                        data.episodes?.let {
-                            episodeRepository.storeEpisodes(it)
-                        }
-                    }
-                }
-                else -> {}
-            }
-
-            return@withContext response
+        return combine(
+            localPodcastDetailsFlow,
+            podcastEpisodesFlow
+        ) { podcastDetails, episodes ->
+            podcastDetails?.copy(
+                episodes = episodes
+            )
         }
-
+    }
 }
+

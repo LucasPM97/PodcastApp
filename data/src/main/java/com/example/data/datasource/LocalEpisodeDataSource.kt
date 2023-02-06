@@ -4,8 +4,14 @@ import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpiso
 import com.example.podcast_details_domain.mocks.mockEpisode
 import com.example.podcast_details_domain.mocks.mockEpisodesList
 import com.example.core.models.Episode
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class LocalEpisodeDataSource : ILocalEpisodeDataSource {
+    override fun getEpisodesByPodcastFlow(podcastUuid: String): Flow<List<Episode>> = flow {
+        emit(mockEpisodesList())
+    }
+
     override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {
         return mockEpisodesList()
     }

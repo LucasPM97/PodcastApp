@@ -8,6 +8,7 @@ import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastR
 import com.example.podcast_details_domain.models.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class PodcastRepository(
@@ -15,10 +16,8 @@ class PodcastRepository(
     private val localDataSource: ILocalPodcastDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : IPodcastRepository {
-    override suspend fun getLocalPodcastDetails(podcastUuid: String): PodcastDetails? =
-        withContext(dispatcher) {
-            return@withContext localDataSource.getPodcastDetails(podcastUuid)
-        }
+    override fun getLocalPodcastDetails(podcastUuid: String): Flow<PodcastDetails?> =
+        localDataSource.getPodcastDetails(podcastUuid)
 
     override suspend fun getRemotePodcastDetails(podcastUuid: String): ApiResponse<PodcastDetails> =
         withContext(dispatcher) {
