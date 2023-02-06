@@ -17,7 +17,7 @@ import com.example.core_ui.theme.PodcastAppTheme
 import com.example.core.extensions.datePublishedText
 import com.example.core.extensions.durationText
 import com.example.core.extensions.fullWatched
-import com.example.podcast_details_domain.mocks.mockEpisode
+import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 
 @Composable

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.components.SpaceVertical20
 import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
-import com.example.podcast_details_domain.mocks.mockPodcast
+import com.example.core.mocks.mockPodcast
 import com.example.core.models.Episode
 import com.example.core.models.podcastDetails.PodcastDetails
 

@@ -12,6 +12,9 @@ class EpisodeRepository(
         return localDataSource.getEpisodesByPodcastFlow(podcastUuid)
     }
 
+    override fun getEpisodeByUuidFlow(uuid: String): Flow<Episode?> =
+        localDataSource.getEpisodeByUuidFlow(uuid)
+
     override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {
         return localDataSource.getEpisodesByPodcast(podcastUuid)
     }

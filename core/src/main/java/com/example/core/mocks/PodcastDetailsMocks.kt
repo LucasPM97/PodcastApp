@@ -1,4 +1,4 @@
-package com.example.podcast_details_domain.mocks
+package com.example.core.mocks
 
 import com.example.core.models.Episode
 import com.example.core.models.Genre
