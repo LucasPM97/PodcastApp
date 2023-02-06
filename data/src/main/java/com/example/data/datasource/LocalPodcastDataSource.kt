@@ -3,8 +3,8 @@ package com.example.data.datasource
 import com.example.data.extensions.toDomainPodcastDetails
 import com.example.data.extensions.toLocalPodcastDetails
 import com.example.data.models.LocalPodcastDetails
-import com.example.podcast_details_domain.data_interfaces.datasource.ILocalPodcastDataSource
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.data_interfaces.datasource.ILocalPodcastDataSource
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

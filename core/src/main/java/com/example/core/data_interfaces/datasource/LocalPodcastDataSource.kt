@@ -1,6 +1,6 @@
-package com.example.podcast_details_domain.data_interfaces.datasource
+package com.example.core.data_interfaces.datasource
 
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlinx.coroutines.flow.Flow
 
 interface ILocalPodcastDataSource {

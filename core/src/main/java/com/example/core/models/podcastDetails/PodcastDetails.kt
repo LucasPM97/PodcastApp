@@ -1,4 +1,4 @@
-package com.example.podcast_details_domain.models
+package com.example.core.models.podcastDetails
 
 import com.example.core.models.Episode
 import com.example.core.models.Genre

@@ -1,4 +1,4 @@
-package com.example.podcast_details_domain.data_interfaces.repositories
+package com.example.core.data_interfaces.repositories
 
 import com.example.core.models.Episode
 import kotlinx.coroutines.flow.Flow

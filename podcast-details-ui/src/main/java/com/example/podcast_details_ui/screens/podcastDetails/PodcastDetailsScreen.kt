@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.extensions.calculateDominantColor
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.models.podcastDetails.PodcastDetails
 import com.example.podcast_details_ui.screens.podcastDetails.components.Header
 import com.example.podcast_details_ui.screens.podcastDetails.components.LoadingScreen
 import com.example.podcast_details_ui.screens.podcastDetails.components.PodcastDetailsContent

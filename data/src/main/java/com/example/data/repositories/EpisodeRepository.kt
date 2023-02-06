@@ -1,7 +1,7 @@
 package com.example.data.repositories
 
-import com.example.podcast_details_domain.data_interfaces.datasource.ILocalEpisodeDataSource
-import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
+import com.example.core.data_interfaces.datasource.ILocalEpisodeDataSource
+import com.example.core.data_interfaces.repositories.IEpisodeRepository
 import com.example.core.models.Episode
 import kotlinx.coroutines.flow.Flow
 

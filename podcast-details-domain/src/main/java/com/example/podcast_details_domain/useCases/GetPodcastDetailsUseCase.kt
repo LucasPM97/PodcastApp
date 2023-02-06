@@ -1,8 +1,8 @@
 package com.example.podcast_details_domain.useCases
 
-import com.example.podcast_details_domain.data_interfaces.repositories.IEpisodeRepository
-import com.example.podcast_details_domain.data_interfaces.repositories.IPodcastRepository
-import com.example.podcast_details_domain.models.PodcastDetails
+import com.example.core.data_interfaces.repositories.IEpisodeRepository
+import com.example.core.data_interfaces.repositories.IPodcastRepository
+import com.example.core.models.podcastDetails.PodcastDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
