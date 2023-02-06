@@ -71,7 +71,6 @@ dependencies {
 
     // Navigation Compose
     implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
-    implementation "com.google.accompanist:accompanist-navigation-material:0.29.1-alpha"
 
     // Koin: Dependency Injection
     implementation "io.insert-koin:koin-core:$koin_version"

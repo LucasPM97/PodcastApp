@@ -11,14 +11,12 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.core_ui.components.SpaceVertical20
 import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_domain.mocks.mockPodcast
 import com.example.podcast_details_domain.models.Episode
 import com.example.podcast_details_domain.models.PodcastDetails
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 
 
 @Composable
