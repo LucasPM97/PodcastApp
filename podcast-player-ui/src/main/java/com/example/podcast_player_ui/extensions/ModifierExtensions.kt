@@ -11,7 +11,6 @@ import com.example.podcast_player_ui.models.ComponentSize
 @Composable
 fun Modifier.componentSizeHeight(
     componentSize: ComponentSize,
-    screenHeight: Dp,
     dynamicHeight: Dp
 ): Modifier {
     if (dynamicHeight > 0.dp) {
@@ -20,6 +19,6 @@ fun Modifier.componentSizeHeight(
     return when (componentSize) {
         ComponentSize.None -> height(0.dp)
         ComponentSize.Small -> this
-        ComponentSize.FullScreen -> height(screenHeight)
+        ComponentSize.FullScreen -> this
     }
 }

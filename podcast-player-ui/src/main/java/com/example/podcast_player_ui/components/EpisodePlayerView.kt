@@ -2,8 +2,6 @@ package com.example.podcast_player_ui.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -14,8 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.mocks.mockEpisode
@@ -52,78 +48,16 @@ private fun Content(
     onSizeChanged: (ComponentSize) -> Unit = {}
 ) {
 
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-
     BackHandler(componentSize == ComponentSize.FullScreen) {
         onSizeChanged(ComponentSize.Small)
     }
 
-    var onDragging by remember { mutableStateOf(false) }
-    var offsetY by remember { mutableStateOf(0f) }
-    val offsetYInDp =
-        LocalDensity.current.run { offsetY.toDp() }
 
-    var componentCurrentHeighInPx by remember {
-        mutableStateOf(0f)
-    }
-    val componentCurrentHeighBeforeDragInDp =
-        LocalDensity.current.run {
-            componentCurrentHeighInPx.toDp()
-        }
-    val componentDynamicHeighInDp =
-        LocalDensity.current.run {
-            componentCurrentHeighInPx.toDp() - offsetYInDp
-        }
-
-    println("OffsetY: $offsetYInDp")
-    println("Component Height: $componentDynamicHeighInDp")
-
-    Box(
+    PlayerDraggableBox(
         modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(0.dp, screenHeight)
-            .background(DarkGray)
-            .componentSizeHeight(
-                componentSize,
-                screenHeight,
-                dynamicHeight = if (onDragging) componentDynamicHeighInDp
-                else 0.dp
-            )
-            .onSizeChanged {
-                if (!onDragging) {
-                    componentCurrentHeighInPx = it.height.toFloat()
-                }
-            }
-            .draggable(
-                orientation = Orientation.Vertical,
-                state = rememberDraggableState { delta ->
-                    offsetY += delta
-                },
-                onDragStarted = {
-                    onDragging = true
-                },
-                onDragStopped = {
-                    var nextComponentSize = componentSize
-                    if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
-                        when (componentSize) {
-                            ComponentSize.None -> {}
-                            ComponentSize.Small -> nextComponentSize = ComponentSize.None
-                            ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
-                        }
-                    } else {
-                        when (componentSize) {
-                            ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
-                            else -> {}
-                        }
-                    }
-
-                    onSizeChanged(nextComponentSize)
-                    onDragging = false
-                    offsetY = 0f
-                }
-            )
-            .animateContentSize()
+            .fillMaxWidth(),
+        componentSize = componentSize,
+        onSizeChanged = onSizeChanged
     ) {
         when (componentSize) {
             ComponentSize.None -> {}
@@ -136,11 +70,13 @@ private fun Content(
                     .padding(bottom = 20.dp, top = 10.dp)
                     .padding(horizontal = 10.dp))
             ComponentSize.FullScreen -> {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .background(Green)
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .background(Green)
+                    )
+                }
             }
         }
     }
