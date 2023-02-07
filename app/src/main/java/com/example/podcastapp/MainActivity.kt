@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     PodcastDetailsScreen(
                         modifier = Modifier.padding(it),
                         openPodcastPlayer = {
-                            playerSize = ComponentSize.Small
+                            playerSize = ComponentSize.FullScreen
                         }
                     )
                 }
