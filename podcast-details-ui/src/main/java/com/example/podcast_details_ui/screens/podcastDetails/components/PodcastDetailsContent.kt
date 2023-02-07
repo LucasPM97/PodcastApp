@@ -81,7 +81,7 @@ fun PodcastDetailsContent(
             }
         }
         podcastDetails.episodes?.let { episodes ->
-            renderLazyEpisodesList(episodes)
+            renderLazyEpisodesList(episodes,openPodcastPlayer)
             fillLazyColumn(
                 spaceAlreadyOccupiedInPx = episodeItemHeightInPx * episodes.size + firstEpisodeItemOffsetInPx,
                 listHeightInPx = listHeightInPx.toFloat()
@@ -97,13 +97,17 @@ val FIRST_EPISODE_ITEM_OFFSET_DP = 10.dp
 val EPISODE_ITEM_SIZE_PLUS_SPACER_DP = (EPISODE_ITEM_SIZE).dp + 20.dp
 
 // Forced to do this because the NestedScroll on Compose doesn't work as it should
-private fun LazyListScope.renderLazyEpisodesList(episodes: List<Episode>) {
+private fun LazyListScope.renderLazyEpisodesList(
+    episodes: List<Episode>,
+    openPodcastPlayer: (episodeUuid: String) -> Unit
+) {
     items(episodes) {
         EpisodeItem(
             episode = it,
             height = EPISODE_ITEM_SIZE,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            playOnClick = openPodcastPlayer
         )
         SpacerVertical20()
     }
