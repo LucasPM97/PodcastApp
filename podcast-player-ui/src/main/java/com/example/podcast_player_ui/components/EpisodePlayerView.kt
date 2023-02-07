@@ -2,6 +2,8 @@ package com.example.podcast_player_ui.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 import com.example.core_ui.theme.DarkGray
+import com.example.core_ui.theme.Green
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.PlayerViewModel
 import com.example.podcast_player_ui.extensions.componentSizeHeight
@@ -75,85 +78,69 @@ private fun Content(
 
     println("OffsetY: $offsetYInDp")
     println("Component Height: $componentDynamicHeighInDp")
-    AnimatedContent(
-        modifier = Modifier
-            .background(DarkGray),
-        targetState = componentSize,
-        transitionSpec = {
-            // Compare the incoming number with the previous number.
-            if (targetState > initialState) {
-                // If the target number is larger, it slides up and fades in
-                // while the initial (smaller) number slides up and fades out.
-                slideInVertically { height -> height } with
-                        slideOutVertically { height -> -height }
-            } else {
-                // If the target number is smaller, it slides down and fades in
-                // while the initial number slides down and fades out.
-                slideInVertically { height -> -height } with
-                        slideOutVertically { height -> height }
-            }.using(
-                // Disable clipping since the faded slide-in/out should
-                // be displayed out of bounds.
-                SizeTransform(clip = false)
-            )
-        }
-    ) {
-        Surface(
-            color = DarkGray,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(0.dp, screenHeight)
-                .componentSizeHeight(
-                    componentSize,
-                    screenHeight,
-                    dynamicHeight = if (onDragging) componentDynamicHeighInDp
-                    else 0.dp
-                )
-                .onSizeChanged {
-                    if (!onDragging) {
-                        componentCurrentHeighInPx = it.height.toFloat()
-                    }
-                }
-                .draggable(
-                    orientation = Orientation.Vertical,
-                    state = rememberDraggableState { delta ->
-                        offsetY += delta
-                    },
-                    onDragStarted = {
-                        onDragging = true
-                    },
-                    onDragStopped = {
-                        var nextComponentSize = componentSize
-                        if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
-                            when (componentSize) {
-                                ComponentSize.None -> {}
-                                ComponentSize.Small -> nextComponentSize = ComponentSize.None
-                                ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
-                            }
-                        } else {
-                            when (componentSize) {
-                                ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
-                                else -> {}
-                            }
-                        }
 
-                        onSizeChanged(nextComponentSize)
-                        onDragging = false
-                        offsetY = 0f
-                    }
-                )
-        ) {
-            when (componentSize) {
-                ComponentSize.None -> {}
-                ComponentSize.Small -> RowPlayer(episode,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onSizeChanged(ComponentSize.FullScreen)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(0.dp, screenHeight)
+            .background(DarkGray)
+            .componentSizeHeight(
+                componentSize,
+                screenHeight,
+                dynamicHeight = if (onDragging) componentDynamicHeighInDp
+                else 0.dp
+            )
+            .onSizeChanged {
+                if (!onDragging) {
+                    componentCurrentHeighInPx = it.height.toFloat()
+                }
+            }
+            .draggable(
+                orientation = Orientation.Vertical,
+                state = rememberDraggableState { delta ->
+                    offsetY += delta
+                },
+                onDragStarted = {
+                    onDragging = true
+                },
+                onDragStopped = {
+                    var nextComponentSize = componentSize
+                    if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
+                        when (componentSize) {
+                            ComponentSize.None -> {}
+                            ComponentSize.Small -> nextComponentSize = ComponentSize.None
+                            ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
                         }
-                        .padding(bottom = 20.dp, top = 10.dp)
-                        .padding(horizontal = 10.dp))
-                ComponentSize.FullScreen -> {}
+                    } else {
+                        when (componentSize) {
+                            ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
+                            else -> {}
+                        }
+                    }
+
+                    onSizeChanged(nextComponentSize)
+                    onDragging = false
+                    offsetY = 0f
+                }
+            )
+            .animateContentSize()
+    ) {
+        when (componentSize) {
+            ComponentSize.None -> {}
+            ComponentSize.Small -> RowPlayer(episode,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onSizeChanged(ComponentSize.FullScreen)
+                    }
+                    .padding(bottom = 20.dp, top = 10.dp)
+                    .padding(horizontal = 10.dp))
+            ComponentSize.FullScreen -> {
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Green)
+                )
             }
         }
     }
