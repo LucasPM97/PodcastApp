@@ -1,20 +1,27 @@
 package com.example.podcast_player_ui.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
+import com.example.core_ui.components.AppAsyncImage
+import com.example.core_ui.components.SpacerHorizontal20
+import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.DarkGray
+import com.example.core_ui.theme.Green
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.PlayerViewModel
 import com.example.podcast_player_ui.extensions.dynamicHeight
@@ -45,8 +52,13 @@ private fun Content(
     episode: Episode?,
     onSizeChanged: (ComponentSize) -> Unit = {}
 ) {
+
     fun switchComponentSize() {
         onSizeChanged(componentSize.switchSize())
+    }
+
+    BackHandler(componentSize == ComponentSize.FullScreen) {
+        switchComponentSize()
     }
 
     AnimatedContent(
@@ -79,13 +91,71 @@ private fun Content(
                     it,
                     smallHeight = 30.dp
                 )
-                .clickable {
-                    switchComponentSize()
-                }
         ) {
-
+            when (componentSize) {
+                ComponentSize.None -> {}
+                ComponentSize.Small -> RowPlayer(episode,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            switchComponentSize()
+                        }
+                        .padding(bottom = 20.dp, top = 10.dp)
+                        .padding(horizontal = 10.dp))
+                ComponentSize.FullScreen -> {}
+            }
         }
     }
+}
+
+@Composable
+fun RowPlayer(
+    episode: Episode?,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AppAsyncImage(
+                modifier = Modifier
+                    .size(70.dp)
+                    .roundedRectangle(10.dp),
+                imageUrl = episode?.imageUrl ?: "",
+                contentDescription = episode?.name ?: "",
+            )
+            SpacerHorizontal20()
+            Column {
+                Text(
+                    text = episode?.name ?: "",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = episode?.podcastName ?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Green
+                )
+            }
+        }
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Filled.PlayArrow, contentDescription = "play",
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Filled.SkipNext, contentDescription = "play",
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
+    }
+
 }
 
 

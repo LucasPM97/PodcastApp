@@ -26,7 +26,6 @@ fun mockEpisodesList() = listOf(
         duration = 2964,
         seasonNumber = null,
         episodeNumber = null,
-        watched = true,
         timeWatched = 2964
     ),
     mockEpisode().copy(
@@ -92,7 +91,7 @@ fun mockEpisode(
     duration = 2964,
     seasonNumber = null,
     episodeNumber = null,
-    watched = watched,
-    timeWatched = if (watched) (0..2964).random() else 0
+    timeWatched = if (watched) (0..2964).random() else 0,
+    podcastName = "This American Life"
 )
 

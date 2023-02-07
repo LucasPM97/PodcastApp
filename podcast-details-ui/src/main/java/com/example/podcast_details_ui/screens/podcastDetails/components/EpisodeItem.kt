@@ -83,7 +83,6 @@ fun Preview_EpisodeItemFullWatched() {
         EpisodeItem(
             episode = mockEpisode().copy(
                 duration = 3000,
-                watched = true,
                 timeWatched = 3000
             ),
             height = 80
@@ -98,7 +97,6 @@ fun Preview_EpisodeItemPartiallyWatched() {
         EpisodeItem(
             episode = mockEpisode().copy(
                 duration = 3000,
-                watched = true,
                 timeWatched = 1500
             ),
             height = 80
@@ -113,7 +111,6 @@ fun Preview_EpisodeItemNoWatched() {
         EpisodeItem(
             episode = mockEpisode().copy(
                 duration = 2964,
-                watched = false,
                 timeWatched = 0
             ),
             height = 80

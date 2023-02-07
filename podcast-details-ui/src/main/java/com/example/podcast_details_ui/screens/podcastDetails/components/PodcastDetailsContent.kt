@@ -11,7 +11,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core_ui.components.SpaceVertical20
+import com.example.core_ui.components.SpacerVertical20
 import com.example.core_ui.components.fillLazyColumn
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.core.mocks.mockPodcast
@@ -42,13 +42,13 @@ fun PodcastDetailsContent(
             },
     ) {
         item {
-            SpaceVertical20()
+            SpacerVertical20()
             PodcastImage(
                 imageUrl = podcastDetails.imageUrl,
                 podcastName = podcastDetails.name,
                 imageLoaded = imageLoaded
             )
-            SpaceVertical20()
+            SpacerVertical20()
             PodcastTitle(
                 podcastName = podcastDetails.name ?: "",
                 authorName = podcastDetails.authorName
@@ -56,7 +56,7 @@ fun PodcastDetailsContent(
         }
         item {
             Description(podcastDetails.description)
-            SpaceVertical20()
+            SpacerVertical20()
             ActionButtons(
                 lastEpisode = podcastDetails.episodes?.last(),
                 fav = false,
@@ -70,14 +70,14 @@ fun PodcastDetailsContent(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            SpaceVertical20()
+            SpacerVertical20()
             podcastDetails.episodes?.let { _ ->
                 ScrollToEpisodesButton(
                     modifier = Modifier.fillMaxWidth(),
                     scrollState = scrollState,
                     firstEpisodeItemIndex = 2
                 )
-                SpaceVertical20()
+                SpacerVertical20()
             }
         }
         podcastDetails.episodes?.let { episodes ->
@@ -105,7 +105,7 @@ private fun LazyListScope.renderLazyEpisodesList(episodes: List<Episode>) {
             modifier = Modifier
                 .fillMaxWidth()
         )
-        SpaceVertical20()
+        SpacerVertical20()
     }
 }
 
