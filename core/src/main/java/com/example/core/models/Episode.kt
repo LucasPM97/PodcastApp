@@ -11,6 +11,6 @@ data class Episode(
     val datePublished: Int?,
     val seasonNumber: Int?,
     val episodeNumber: Int?,
-    val watched: Boolean = false,
-    val timeWatched: Int = 0
+    val timeWatched: Int = 0,
+    val podcastName: String? = null,
 )

@@ -13,13 +13,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core_ui.theme.Green
 import com.example.core_ui.theme.PodcastAppTheme
 
 @Composable
 fun PodcastDetailsGradient(
     isVisible: Boolean,
-    colors: List<Color>,
+    dominantColor: Color,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
@@ -31,7 +30,10 @@ fun PodcastDetailsGradient(
             modifier = modifier
                 .background(
                     Brush.verticalGradient(
-                        colors
+                        listOf(
+                            dominantColor,
+                            MaterialTheme.colorScheme.primary
+                        )
                     )
                 )
         )
@@ -44,10 +46,7 @@ fun Preview_PodcastDetailsGradient() {
     PodcastAppTheme {
         PodcastDetailsGradient(
             isVisible = true,
-            colors = listOf(
-                MaterialTheme.colorScheme.secondaryContainer,
-                MaterialTheme.colorScheme.primary
-            ),
+            dominantColor = MaterialTheme.colorScheme.secondaryContainer,
             modifier = Modifier.size(50.dp)
         )
     }

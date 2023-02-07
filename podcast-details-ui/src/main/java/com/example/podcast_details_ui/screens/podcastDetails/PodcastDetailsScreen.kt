@@ -65,10 +65,7 @@ fun ScreenContent(
         ) {
             PodcastDetailsGradient(
                 isVisible = podcastTitleNotVisible,
-                colors = listOf(
-                    dominantColor,
-                    primaryColor
-                ),
+                dominantColor = dominantColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
