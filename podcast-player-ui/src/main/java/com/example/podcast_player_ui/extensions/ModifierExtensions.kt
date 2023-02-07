@@ -9,8 +9,17 @@ import androidx.compose.ui.unit.dp
 import com.example.podcast_player_ui.models.ComponentSize
 
 @Composable
-fun Modifier.dynamicHeight(componentSize: ComponentSize, smallHeight: Dp) = when (componentSize) {
-    ComponentSize.None -> height(0.dp)
-    ComponentSize.Small -> this
-    ComponentSize.FullScreen -> fillMaxHeight()
+fun Modifier.componentSizeHeight(
+    componentSize: ComponentSize,
+    screenHeight: Dp,
+    dynamicHeight: Dp
+): Modifier {
+    if (dynamicHeight > 0.dp) {
+        return height(dynamicHeight)
+    }
+    return when (componentSize) {
+        ComponentSize.None -> height(0.dp)
+        ComponentSize.Small -> this
+        ComponentSize.FullScreen -> height(screenHeight)
+    }
 }
