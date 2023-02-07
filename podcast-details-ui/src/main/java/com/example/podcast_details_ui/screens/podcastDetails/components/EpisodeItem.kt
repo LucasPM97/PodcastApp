@@ -1,5 +1,6 @@
 package com.example.podcast_details_ui.screens.podcastDetails.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
@@ -19,16 +20,26 @@ import com.example.core.extensions.durationText
 import com.example.core.extensions.fullWatched
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
+import com.example.core_ui.components.SpacerHorizontal20
 
 @Composable
 fun EpisodeItem(
     episode: Episode,
     height: Int,
     modifier: Modifier = Modifier,
+    playOnClick: (episodeUuid: String) -> Unit = {},
 ) {
+
+    fun playEpisode() {
+        episode.uuid?.let {
+            playOnClick(episode.uuid!!)
+        }
+    }
+
     Row(
         modifier
-            .height(height.dp),
+            .height(height.dp)
+            .clickable { playEpisode() },
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
@@ -45,18 +56,16 @@ fun EpisodeItem(
                 modifier = Modifier
                     .roundedRectangle(20.dp)
             )
-            Spacer(modifier = Modifier.width(20.dp))
+            SpacerHorizontal20()
             Title(episode)
         }
-        Spacer(modifier = Modifier.width(20.dp))
-        IconButton(onClick = { /*TODO*/ }) {
+        SpacerHorizontal20()
             Icon(
                 imageVector = Icons.Filled.PlayCircle,
                 contentDescription = "play episode ${episode.name}",
                 tint = if (episode.fullWatched()) Gray
                 else Color.White
             )
-        }
     }
 }
 
@@ -85,7 +94,7 @@ fun Preview_EpisodeItemFullWatched() {
                 duration = 3000,
                 timeWatched = 3000
             ),
-            height = 80
+            height = 80,
         )
     }
 }
@@ -99,7 +108,7 @@ fun Preview_EpisodeItemPartiallyWatched() {
                 duration = 3000,
                 timeWatched = 1500
             ),
-            height = 80
+            height = 80,
         )
     }
 }
@@ -113,7 +122,7 @@ fun Preview_EpisodeItemNoWatched() {
                 duration = 2964,
                 timeWatched = 0
             ),
-            height = 80
+            height = 80,
         )
     }
 }
