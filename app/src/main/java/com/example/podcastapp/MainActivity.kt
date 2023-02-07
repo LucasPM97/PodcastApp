@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_ui.screens.podcastDetails.PodcastDetailsScreen
 import com.example.podcast_player_ui.components.EpisodePlayerView
@@ -31,7 +32,6 @@ class MainActivity : ComponentActivity() {
                 var playerSize by remember {
                     mutableStateOf(ComponentSize.None)
                 }
-
                 Scaffold(
                     bottomBar = {
                         EpisodePlayerView(

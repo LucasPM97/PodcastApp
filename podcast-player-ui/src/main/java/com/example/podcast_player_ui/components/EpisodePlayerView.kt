@@ -4,29 +4,25 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
-import com.example.core_ui.components.AppAsyncImage
-import com.example.core_ui.components.SpacerHorizontal20
-import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.DarkGray
-import com.example.core_ui.theme.Green
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.PlayerViewModel
-import com.example.podcast_player_ui.extensions.dynamicHeight
+import com.example.podcast_player_ui.extensions.componentSizeHeight
 import com.example.podcast_player_ui.models.ComponentSize
-import com.example.podcast_player_ui.models.switchSize
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -53,16 +49,35 @@ private fun Content(
     onSizeChanged: (ComponentSize) -> Unit = {}
 ) {
 
-    fun switchComponentSize() {
-        onSizeChanged(componentSize.switchSize())
-    }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
 
     BackHandler(componentSize == ComponentSize.FullScreen) {
-        switchComponentSize()
+        onSizeChanged(ComponentSize.Small)
     }
 
+    var onDragging by remember { mutableStateOf(false) }
+    var offsetY by remember { mutableStateOf(0f) }
+    val offsetYInDp =
+        LocalDensity.current.run { offsetY.toDp() }
+
+    var componentCurrentHeighInPx by remember {
+        mutableStateOf(0f)
+    }
+    val componentCurrentHeighBeforeDragInDp =
+        LocalDensity.current.run {
+            componentCurrentHeighInPx.toDp()
+        }
+    val componentDynamicHeighInDp =
+        LocalDensity.current.run {
+            componentCurrentHeighInPx.toDp() - offsetYInDp
+        }
+
+    println("OffsetY: $offsetYInDp")
+    println("Component Height: $componentDynamicHeighInDp")
     AnimatedContent(
-        modifier = Modifier.background(DarkGray),
+        modifier = Modifier
+            .background(DarkGray),
         targetState = componentSize,
         transitionSpec = {
             // Compare the incoming number with the previous number.
@@ -87,9 +102,45 @@ private fun Content(
             color = DarkGray,
             modifier = Modifier
                 .fillMaxWidth()
-                .dynamicHeight(
-                    it,
-                    smallHeight = 30.dp
+                .heightIn(0.dp, screenHeight)
+                .componentSizeHeight(
+                    componentSize,
+                    screenHeight,
+                    dynamicHeight = if (onDragging) componentDynamicHeighInDp
+                    else 0.dp
+                )
+                .onSizeChanged {
+                    if (!onDragging) {
+                        componentCurrentHeighInPx = it.height.toFloat()
+                    }
+                }
+                .draggable(
+                    orientation = Orientation.Vertical,
+                    state = rememberDraggableState { delta ->
+                        offsetY += delta
+                    },
+                    onDragStarted = {
+                        onDragging = true
+                    },
+                    onDragStopped = {
+                        var nextComponentSize = componentSize
+                        if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
+                            when (componentSize) {
+                                ComponentSize.None -> {}
+                                ComponentSize.Small -> nextComponentSize = ComponentSize.None
+                                ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
+                            }
+                        } else {
+                            when (componentSize) {
+                                ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
+                                else -> {}
+                            }
+                        }
+
+                        onSizeChanged(nextComponentSize)
+                        onDragging = false
+                        offsetY = 0f
+                    }
                 )
         ) {
             when (componentSize) {
@@ -98,7 +149,7 @@ private fun Content(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            switchComponentSize()
+                            onSizeChanged(ComponentSize.FullScreen)
                         }
                         .padding(bottom = 20.dp, top = 10.dp)
                         .padding(horizontal = 10.dp))
@@ -108,61 +159,11 @@ private fun Content(
     }
 }
 
-@Composable
-fun RowPlayer(
-    episode: Episode?,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppAsyncImage(
-                modifier = Modifier
-                    .size(70.dp)
-                    .roundedRectangle(10.dp),
-                imageUrl = episode?.imageUrl ?: "",
-                contentDescription = episode?.name ?: "",
-            )
-            SpacerHorizontal20()
-            Column {
-                Text(
-                    text = episode?.name ?: "",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-                Text(
-                    text = episode?.podcastName ?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Green
-                )
-            }
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.PlayArrow, contentDescription = "play",
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.SkipNext, contentDescription = "play",
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
-    }
-
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun Preview_Content() {
+fun Preview_RowPlayer() {
     PodcastAppTheme {
 
         var playerSize by remember {
