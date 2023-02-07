@@ -1,5 +1,6 @@
 package com.example.podcast_player_ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -19,14 +20,18 @@ import com.example.core_ui.components.AppAsyncImage
 import com.example.core_ui.components.SpacerHorizontal20
 import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.Green
+import com.example.podcast_player_ui.models.ComponentSize
 
 @Composable
 fun RowPlayer(
     episode: Episode?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    expandePlayer: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            expandePlayer()
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -45,12 +50,14 @@ fun RowPlayer(
                 Text(
                     text = episode?.name ?: "",
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.secondary,
+                    maxLines = 1
                 )
                 Text(
                     text = episode?.podcastName ?: "",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Green
+                    color = Green,
+                    maxLines = 1
                 )
             }
         }
