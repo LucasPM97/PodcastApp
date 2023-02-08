@@ -1,7 +1,6 @@
 package com.example.podcast_player_ui.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -14,22 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.core_ui.theme.DarkGray
 import com.example.podcast_player_ui.extensions.componentSizeHeight
 import com.example.podcast_player_ui.models.ComponentSize
+import kotlin.math.roundToInt
 
 @Composable
 fun PlayerDraggableBox(
     componentSize: ComponentSize,
     modifier: Modifier = Modifier,
-    onSizeChanged: (ComponentSize) -> Unit = {},
+    onComponentSizeChanged: (ComponentSize) -> Unit = {},
+    onHeightChanged: (screenFilledPercentage: Int) -> Unit = {},
     content: @Composable BoxScope.() -> Unit = {}
 ) {
-    // Max height
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-
 
     var onDragging by remember { mutableStateOf(false) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -48,12 +47,16 @@ fun PlayerDraggableBox(
             componentCurrentHeighInPx.toDp() - offsetYInDp
         }
 
+    LaunchedEffect(componentDynamicHeighInDp) {
+        val percentageOfScreenFilled = (componentDynamicHeighInDp * 100) / screenHeight
+
+        onHeightChanged(percentageOfScreenFilled.roundToInt())
+    }
 
     Box(
         modifier = modifier
-            .fillMaxWidth()
             .heightIn(0.dp, screenHeight)
-            .background(DarkGray)
+            .fillMaxWidth()
             .componentSizeHeight(
                 componentSize,
                 dynamicHeight = if (onDragging) componentDynamicHeighInDp
@@ -71,29 +74,41 @@ fun PlayerDraggableBox(
                 },
                 onDragStarted = {
                     onDragging = true
+                    offsetY = 0f
                 },
                 onDragStopped = {
-                    var nextComponentSize = componentSize
-                    if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
-                        when (componentSize) {
-                            ComponentSize.None -> {}
-                            ComponentSize.Small -> nextComponentSize = ComponentSize.None
-                            ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
-                        }
-                    } else {
-                        when (componentSize) {
-                            ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
-                            else -> {}
-                        }
-                    }
-
-                    onSizeChanged(nextComponentSize)
+                    val nextComponentSize = calculateNextComponentSize(
+                        componentSize,
+                        componentCurrentHeighBeforeDragInDp,
+                        componentDynamicHeighInDp
+                    )
+                    onComponentSizeChanged(nextComponentSize)
                     onDragging = false
-                    offsetY = 0f
                 }
             )
             .animateContentSize()
     ) {
         content()
     }
+}
+
+private fun calculateNextComponentSize(
+    componentSize: ComponentSize,
+    componentCurrentHeighBeforeDragInDp: Dp,
+    componentDynamicHeighInDp: Dp
+): ComponentSize {
+    var nextComponentSize = componentSize
+    if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
+        when (componentSize) {
+            ComponentSize.None -> {}
+            ComponentSize.Small -> nextComponentSize = ComponentSize.None
+            ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
+        }
+    } else {
+        when (componentSize) {
+            ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
+            else -> {}
+        }
+    }
+    return nextComponentSize
 }
