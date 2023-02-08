@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.podcast_player_ui.components.ROW_PLAYER_HEIGHT
 import com.example.podcast_player_ui.models.ComponentSize
 
 @Composable
@@ -18,7 +19,7 @@ fun Modifier.componentSizeHeight(
     }
     return when (componentSize) {
         ComponentSize.None -> height(0.dp)
-        ComponentSize.Small -> height(100.dp)
+        ComponentSize.Small -> height(ROW_PLAYER_HEIGHT)
         ComponentSize.FullScreen -> fillMaxHeight()
     }
 }

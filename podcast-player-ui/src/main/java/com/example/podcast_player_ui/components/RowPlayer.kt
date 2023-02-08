@@ -22,6 +22,8 @@ import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.Green
 import com.example.podcast_player_ui.models.ComponentSize
 
+val ROW_PLAYER_HEIGHT = 100.dp
+
 @Composable
 fun RowPlayer(
     episode: Episode?,

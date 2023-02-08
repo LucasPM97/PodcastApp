@@ -24,11 +24,9 @@ fun PlayerDraggableBox(
     componentSize: ComponentSize,
     modifier: Modifier = Modifier,
     onComponentSizeChanged: (ComponentSize) -> Unit = {},
-    onHeightChanged: (screenFilledPercentage: Int) -> Unit = {},
+    onHeightChanged: (boxHeight: Dp) -> Unit = {},
     content: @Composable BoxScope.() -> Unit = {}
 ) {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
 
     var onDragging by remember { mutableStateOf(false) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -48,15 +46,11 @@ fun PlayerDraggableBox(
         }
 
     LaunchedEffect(componentDynamicHeighInDp) {
-        val percentageOfScreenFilled = (componentDynamicHeighInDp * 100) / screenHeight
-
-        onHeightChanged(percentageOfScreenFilled.roundToInt())
+        onHeightChanged(componentDynamicHeighInDp)
     }
 
     Box(
         modifier = modifier
-            .heightIn(0.dp, screenHeight)
-            .fillMaxWidth()
             .componentSizeHeight(
                 componentSize,
                 dynamicHeight = if (onDragging) componentDynamicHeighInDp
