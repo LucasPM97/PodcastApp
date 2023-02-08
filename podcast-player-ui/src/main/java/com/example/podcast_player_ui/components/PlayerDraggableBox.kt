@@ -86,6 +86,7 @@ fun PlayerDraggableBox(
     }
 }
 
+// TODO: Next ComponentSize should be calculated during the dragging and using the Dragging values as Offset and where is the top of the Box
 private fun calculateNextComponentSize(
     componentSize: ComponentSize,
     componentCurrentHeighBeforeDragInDp: Dp,
