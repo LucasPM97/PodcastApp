@@ -24,97 +24,96 @@ fun FullScreenPlayer(
     modifier: Modifier = Modifier,
     collapsePlayer: () -> Unit = {}
 ) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.primary
+    Column(
+        modifier = modifier
+            .padding(10.dp)
     ) {
+        IconButton(onClick = collapsePlayer) {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = "collapse fullscreen player",
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
         Column(
-            Modifier
-                .fillMaxSize()
-                .padding(10.dp)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(horizontal = 50.dp)
+                .weight(1f)
         ) {
-            IconButton(onClick = collapsePlayer) {
-                Icon(
-                    imageVector = Icons.Filled.KeyboardArrowDown,
-                    contentDescription = "collapse fullscreen player"
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            AppAsyncImage(
                 modifier = Modifier
-                    .padding(horizontal = 50.dp)
-                    .weight(1f)
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .roundedRectangle(10.dp),
+                imageUrl = episode?.imageUrl ?: "",
+                contentDescription = episode?.name ?: "",
+            )
+            SpacerVertical20()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                AppAsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .roundedRectangle(10.dp),
-                    imageUrl = episode?.imageUrl ?: "",
-                    contentDescription = episode?.name ?: "",
-                )
-                SpacerVertical20()
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                Spacer(modifier = Modifier.width(30.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f),
                 ) {
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(
-                            text = episode?.name ?: "",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.secondary,
-                            textAlign = TextAlign.Center,
-                            maxLines = 1
-                        )
-                        Text(
-                            text = episode?.podcastName ?: "",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = Green,
-                            textAlign = TextAlign.Center,
-                            maxLines = 1
+                    Text(
+                        text = episode?.name ?: "",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1
+                    )
+                    Text(
+                        text = episode?.podcastName ?: "",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = Green,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1
 
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
-                            contentDescription = "fav episode",
-                            Modifier.size(30.dp)
-                        )
-                    }
+                    )
                 }
-                SpacerVertical20()
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.SkipPrevious,
-                            contentDescription = "fav episode",
-                            Modifier.size(40.dp)
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "fav episode",
-                            Modifier.size(40.dp)
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.SkipNext,
-                            contentDescription = "fav episode",
-                            Modifier.size(40.dp)
-                        )
-                    }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.FavoriteBorder,
+                        contentDescription = "fav episode",
+                        Modifier.size(30.dp),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+            SpacerVertical20()
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.SkipPrevious,
+                        contentDescription = "fav episode",
+                        Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.PlayArrow,
+                        contentDescription = "fav episode",
+                        Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.SkipNext,
+                        contentDescription = "fav episode",
+                        Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
                 }
             }
         }

@@ -60,12 +60,12 @@ fun EpisodeItem(
             Title(episode)
         }
         SpacerHorizontal20()
-            Icon(
-                imageVector = Icons.Filled.PlayCircle,
-                contentDescription = "play episode ${episode.name}",
-                tint = if (episode.fullWatched()) Gray
-                else Color.White
-            )
+        Icon(
+            imageVector = Icons.Filled.PlayCircle,
+            contentDescription = "play episode ${episode.name}",
+            tint = if (episode.fullWatched()) Gray
+            else Color.White
+        )
     }
 }
 
