@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.podcast_player_ui.extensions.componentSizeHeight
 import com.example.podcast_player_ui.models.ComponentSize
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerDraggableBox(
@@ -24,6 +25,8 @@ fun PlayerDraggableBox(
     onHeightChanged: (boxHeightInPx: Int) -> Unit = {},
     content: @Composable BoxScope.() -> Unit = {}
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
 
     var onDragging by remember { mutableStateOf(false) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -54,14 +57,16 @@ fun PlayerDraggableBox(
             .draggable(
                 orientation = Orientation.Vertical,
                 state = rememberDraggableState { delta ->
-                    nextComponentSize = calculateNextComponentSize(
-                        currentComponentSize = componentSize,
-                        boxHeight = dynamicBoxHeightInDp,
-                        screenHeight = screenHeight,
-                        oldOffset = offsetY,
-                        newOffset = offsetY + delta,
-                    )
-                    offsetY += delta
+                    coroutineScope.launch {
+                        nextComponentSize = calculateNextComponentSize(
+                            currentComponentSize = componentSize,
+                            boxHeight = dynamicBoxHeightInDp,
+                            screenHeight = screenHeight,
+                            oldOffset = offsetY,
+                            newOffset = offsetY + delta,
+                        )
+                        offsetY += delta
+                    }
                 },
                 onDragStarted = {
                     onDragging = true

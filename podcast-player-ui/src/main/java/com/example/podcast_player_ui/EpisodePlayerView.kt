@@ -80,12 +80,20 @@ private fun Content(
         rowPlayer = {
             RowPlayer(
                 episode,
+                mediaControllerState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp)
                     .padding(horizontal = 10.dp),
-                expandePlayer = {
+                expandPlayer = {
                     onSizeChanged(ComponentSize.FullScreen)
+                },
+                onPlayClicked = {
+                    if (mediaControllerState.isPlaying) {
+                        mediaController?.pause()
+                    } else {
+                        mediaController?.play()
+                    }
                 }
             )
         }
