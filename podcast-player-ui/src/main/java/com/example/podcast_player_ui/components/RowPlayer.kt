@@ -1,16 +1,8 @@
 package com.example.podcast_player_ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,20 +11,22 @@ import com.example.core.models.Episode
 import com.example.core_ui.components.AppAsyncImage
 import com.example.core_ui.components.SpacerHorizontal20
 import com.example.core_ui.extensions.roundedRectangle
-import com.example.core_ui.theme.Green
-import com.example.podcast_player_ui.models.ComponentSize
+import com.example.podcast_player_ui.components.rowPlayer.EpisodeTitle
+import com.example.podcast_player_ui.components.rowPlayer.PlayerButtons
 
 val ROW_PLAYER_HEIGHT = 100.dp
 
 @Composable
 fun RowPlayer(
     episode: Episode?,
+    mediaControllerState: PlayerState?,
     modifier: Modifier = Modifier,
-    expandePlayer: () -> Unit = {}
+    expandPlayer: () -> Unit = {},
+    onPlayClicked: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.clickable {
-            expandePlayer()
+            expandPlayer()
         },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -48,33 +42,11 @@ fun RowPlayer(
                 contentDescription = episode?.name ?: "",
             )
             SpacerHorizontal20()
-            Column {
-                Text(
-                    text = episode?.name ?: "",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                    maxLines = 1
-                )
-                Text(
-                    text = episode?.podcastName ?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Green,
-                    maxLines = 1
-                )
-            }
+            EpisodeTitle(episode)
         }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.PlayArrow, contentDescription = "play",
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.SkipNext, contentDescription = "play",
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
+        PlayerButtons(
+            isPlaying = mediaControllerState?.isPlaying ?: false,
+            onPlayClicked = onPlayClicked,
+        )
     }
-
 }
