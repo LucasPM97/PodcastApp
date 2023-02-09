@@ -56,7 +56,7 @@ private fun Content(
         }
     }
 
-    AnimatedPlayerBoxContent(
+    DraggablePlayerBoxWithAnimatedContent(
         componentSize = componentSize,
         onSizeChanged = onSizeChanged,
         fullScreenPlayer = {

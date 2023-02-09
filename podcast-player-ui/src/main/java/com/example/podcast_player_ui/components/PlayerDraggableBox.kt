@@ -19,47 +19,48 @@ import com.example.podcast_player_ui.models.ComponentSize
 fun PlayerDraggableBox(
     componentSize: ComponentSize,
     modifier: Modifier = Modifier,
+    screenHeight: Dp,
     onComponentSizeChanged: (ComponentSize) -> Unit = {},
-    onHeightChanged: (boxHeight: Dp) -> Unit = {},
+    onHeightChanged: (boxHeightInPx: Int) -> Unit = {},
     content: @Composable BoxScope.() -> Unit = {}
 ) {
 
     var onDragging by remember { mutableStateOf(false) }
     var offsetY by remember { mutableStateOf(0f) }
-    val offsetYInDp =
-        LocalDensity.current.run { offsetY.toDp() }
-
-    var componentCurrentHeighInPx by remember {
-        mutableStateOf(0f)
+    var boxHeightInPx by remember {
+        mutableStateOf(0)
     }
-    val componentCurrentHeighBeforeDragInDp =
-        LocalDensity.current.run {
-            componentCurrentHeighInPx.toDp()
-        }
-    val componentDynamicHeighInDp =
-        LocalDensity.current.run {
-            componentCurrentHeighInPx.toDp() - offsetYInDp
-        }
+    val dynamicBoxHeightInDp = LocalDensity.current.run {
+        boxHeightInPx.toDp() - offsetY.toDp()
+    }
 
-    LaunchedEffect(componentDynamicHeighInDp) {
-        onHeightChanged(componentDynamicHeighInDp)
+    var nextComponentSize by remember {
+        mutableStateOf(componentSize)
     }
 
     Box(
         modifier = modifier
             .componentSizeHeight(
                 componentSize,
-                dynamicHeight = if (onDragging) componentDynamicHeighInDp
+                dynamicHeight = if (onDragging) dynamicBoxHeightInDp
                 else 0.dp
             )
             .onSizeChanged {
                 if (!onDragging) {
-                    componentCurrentHeighInPx = it.height.toFloat()
+                    boxHeightInPx = it.height
                 }
+                onHeightChanged(it.height)
             }
             .draggable(
                 orientation = Orientation.Vertical,
                 state = rememberDraggableState { delta ->
+                    nextComponentSize = calculateNextComponentSize(
+                        currentComponentSize = componentSize,
+                        boxHeight = dynamicBoxHeightInDp,
+                        screenHeight = screenHeight,
+                        oldOffset = offsetY,
+                        newOffset = offsetY + delta,
+                    )
                     offsetY += delta
                 },
                 onDragStarted = {
@@ -67,13 +68,8 @@ fun PlayerDraggableBox(
                     offsetY = 0f
                 },
                 onDragStopped = {
-                    val nextComponentSize = calculateNextComponentSize(
-                        componentSize,
-                        componentCurrentHeighBeforeDragInDp,
-                        componentDynamicHeighInDp
-                    )
-                    onComponentSizeChanged(nextComponentSize)
                     onDragging = false
+                    onComponentSizeChanged(nextComponentSize)
                 }
             )
             .animateContentSize()
@@ -82,24 +78,34 @@ fun PlayerDraggableBox(
     }
 }
 
-// TODO: Next ComponentSize should be calculated during the dragging and using the Dragging values as Offset and where is the top of the Box
 private fun calculateNextComponentSize(
-    componentSize: ComponentSize,
-    componentCurrentHeighBeforeDragInDp: Dp,
-    componentDynamicHeighInDp: Dp
+    currentComponentSize: ComponentSize,
+    boxHeight: Dp,
+    screenHeight: Dp,
+    oldOffset: Float,
+    newOffset: Float,
 ): ComponentSize {
-    var nextComponentSize = componentSize
-    if (componentCurrentHeighBeforeDragInDp > componentDynamicHeighInDp) {
-        when (componentSize) {
-            ComponentSize.None -> {}
-            ComponentSize.Small -> nextComponentSize = ComponentSize.None
-            ComponentSize.FullScreen -> nextComponentSize = ComponentSize.Small
+
+    if (newOffset - oldOffset > 10 || newOffset - oldOffset < -10) {
+        return if (newOffset > oldOffset) {
+            when (currentComponentSize) {
+                ComponentSize.FullScreen -> ComponentSize.Small
+                else -> ComponentSize.None
+            }
+        } else {
+            when (currentComponentSize) {
+                ComponentSize.Small -> ComponentSize.FullScreen
+                else -> currentComponentSize
+            }
         }
     } else {
-        when (componentSize) {
-            ComponentSize.Small -> nextComponentSize = ComponentSize.FullScreen
-            else -> {}
+        val screenFilled = (boxHeight * 100) / screenHeight
+        return if (boxHeight < ROW_PLAYER_HEIGHT) {
+            ComponentSize.None
+        } else if (screenFilled > 50) {
+            ComponentSize.FullScreen
+        } else {
+            ComponentSize.Small
         }
     }
-    return nextComponentSize
 }
