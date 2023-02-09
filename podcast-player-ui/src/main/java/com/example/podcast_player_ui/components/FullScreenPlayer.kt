@@ -6,6 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.media3.session.MediaController
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 import com.example.core_ui.components.AppAsyncImage
@@ -19,9 +20,12 @@ import com.example.podcast_player_ui.components.fullScreenPlayer.TitleWithFav
 @Composable
 fun FullScreenPlayer(
     episode: Episode?,
+    mediaControllerState: PlayerState?,
     modifier: Modifier = Modifier,
-    collapsePlayer: () -> Unit = {}
+    collapsePlayer: () -> Unit = {},
+    onPlayClicked: () -> Unit = {}
 ) {
+
     Column(
         modifier = modifier
             .padding(10.dp)
@@ -47,8 +51,9 @@ fun FullScreenPlayer(
             SpacerVertical20()
             SpacerVertical20()
             PlayerButtons(
+                isPlaying = mediaControllerState?.isPlaying ?: false,
                 modifier = Modifier.fillMaxWidth(),
-                onPlayClicked = onPlayClicked
+                onPlayClicked = onPlayClicked,
             )
         }
     }

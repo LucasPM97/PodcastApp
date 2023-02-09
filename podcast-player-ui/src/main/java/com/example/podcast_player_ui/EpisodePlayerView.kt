@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MediaItem
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 import com.example.core_ui.theme.PodcastAppTheme
@@ -43,16 +44,35 @@ private fun Content(
         onSizeChanged(ComponentSize.Small)
     }
 
+    val mediaController by rememberMediaController()
+    val mediaControllerState by rememberMediaControllerState(mediaController)
+    LaunchedEffect(mediaController) {
+//        episode?.audioUrl?.let { audioUrl ->
+//            mediaController?.addMediaItem(
+//                MediaItem.fromUri(audioUrl)
+//            )
+//        }
+        mediaController?.prepare()
+    }
+
     AnimatedPlayerBoxContent(
         componentSize = componentSize,
         onSizeChanged = onSizeChanged,
         fullScreenPlayer = {
             FullScreenPlayer(
                 episode,
+                mediaControllerState,
                 modifier = Modifier
                     .fillMaxHeight(),
                 collapsePlayer = {
                     onSizeChanged(ComponentSize.Small)
+                },
+                onPlayClicked = {
+                    if (mediaControllerState.isPlaying) {
+                        mediaController?.pause()
+                    } else {
+                        mediaController?.play()
+                    }
                 }
             )
         },
