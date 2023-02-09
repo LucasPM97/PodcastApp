@@ -28,7 +28,7 @@
         </activity>
         <service
             android:name="com.example.podcast_player_ui.data.services.PodcastPlayerService"
-            android:exported="true"
+            android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
                 <action android:name="androidx.media3.session.MediaSessionService" />

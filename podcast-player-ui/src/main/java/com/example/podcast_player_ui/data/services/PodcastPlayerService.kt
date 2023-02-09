@@ -1,4 +1,4 @@
-package com.example.podcast_player_data.services
+package com.example.podcast_player_ui.data.services
 
 import android.content.ComponentName
 import android.content.Context
