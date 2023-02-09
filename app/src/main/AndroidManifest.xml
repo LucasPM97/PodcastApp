@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.example.podcast_player_data.services.PodcastPlayerService"
+            android:name="com.example.podcast_player_ui.data.services.PodcastPlayerService"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
