@@ -47,12 +47,13 @@ private fun Content(
     val mediaController by rememberMediaController()
     val mediaControllerState by rememberMediaControllerState(mediaController)
     LaunchedEffect(mediaController) {
-//        episode?.audioUrl?.let { audioUrl ->
-//            mediaController?.addMediaItem(
-//                MediaItem.fromUri(audioUrl)
-//            )
-//        }
-        mediaController?.prepare()
+        episode?.audioUrl?.let { audioUrl ->
+            val media = MediaItem.Builder()
+                .setMediaId(audioUrl)
+                .build()
+            mediaController?.setMediaItem(media)
+            mediaController?.prepare()
+        }
     }
 
     AnimatedPlayerBoxContent(
