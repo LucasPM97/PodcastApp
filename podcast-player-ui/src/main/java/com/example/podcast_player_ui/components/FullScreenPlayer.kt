@@ -1,13 +1,9 @@
 package com.example.podcast_player_ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.mocks.mockEpisode
@@ -15,8 +11,10 @@ import com.example.core.models.Episode
 import com.example.core_ui.components.AppAsyncImage
 import com.example.core_ui.components.SpacerVertical20
 import com.example.core_ui.extensions.roundedRectangle
-import com.example.core_ui.theme.Green
 import com.example.core_ui.theme.PodcastAppTheme
+import com.example.podcast_player_ui.components.fullScreenPlayer.CollapseButton
+import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerButtons
+import com.example.podcast_player_ui.components.fullScreenPlayer.TitleWithFav
 
 @Composable
 fun FullScreenPlayer(
@@ -28,13 +26,7 @@ fun FullScreenPlayer(
         modifier = modifier
             .padding(10.dp)
     ) {
-        IconButton(onClick = collapsePlayer) {
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown,
-                contentDescription = "collapse fullscreen player",
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
+        CollapseButton(collapsePlayer)
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -51,71 +43,13 @@ fun FullScreenPlayer(
                 contentDescription = episode?.name ?: "",
             )
             SpacerVertical20()
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Spacer(modifier = Modifier.width(30.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(
-                        text = episode?.name ?: "",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-                    )
-                    Text(
-                        text = episode?.podcastName ?: "",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = Green,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.FavoriteBorder,
-                        contentDescription = "fav episode",
-                        Modifier.size(30.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            }
+            TitleWithFav(episode)
             SpacerVertical20()
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.SkipPrevious,
-                        contentDescription = "fav episode",
-                        Modifier.size(40.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.PlayArrow,
-                        contentDescription = "fav episode",
-                        Modifier.size(40.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.SkipNext,
-                        contentDescription = "fav episode",
-                        Modifier.size(40.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            }
+            SpacerVertical20()
+            PlayerButtons(
+                modifier = Modifier.fillMaxWidth(),
+                onPlayClicked = onPlayClicked
+            )
         }
     }
 }
@@ -126,9 +60,10 @@ private fun Preview_FullScreenPlayer() {
     PodcastAppTheme {
         FullScreenPlayer(
             episode = mockEpisode(),
+            mediaControllerState = null,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .padding(10.dp),
         )
     }
 }
