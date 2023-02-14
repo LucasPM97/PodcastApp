@@ -1,6 +1,7 @@
 package com.example.core.extensions
 
 import com.example.core.models.Episode
+import kotlin.math.roundToInt
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -27,8 +28,15 @@ fun Episode.datePublishedText(): String {
     val realDuration = datePublished.toDuration(
         DurationUnit.SECONDS
     )
-
     realDuration.toComponents { days, hours, minutes, _, _ ->
+        if (days > 365) {
+            val years = (days / 365).toInt()
+            return "$years years ago"
+        }
+        if (days > 30) {
+            val months = (days / 30).toInt()
+            return "$months months ago"
+        }
         if (days > 0) return "$days days ago"
         else if (hours > 0) return "$hours hours ago"
         else if (minutes > 4) return "$minutes minutes ago"
