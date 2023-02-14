@@ -8,63 +8,68 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
 import androidx.media3.common.MediaItem
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
-import com.example.core_ui.components.rememberLifecycleState
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.components.*
-import com.example.podcast_player_ui.models.ComponentSize
-import org.koin.androidx.compose.getViewModel
+import com.example.podcast_player_ui.models.PlayerSize
 
 @Composable
 fun EpisodePlayerView(
-    defaultSize: ComponentSize,
-    viewModel: PlayerViewModel = getViewModel(),
-    onSizeChanged: (ComponentSize) -> Unit = {}
+    episode: Episode?,
+    clearPlaylist: () -> Unit = {}
 ) {
 
-    val episode by viewModel.episode.collectAsState(initial = null)
-
     Content(
-        defaultSize,
         episode,
-        onSizeChanged
+        componentClosed = {
+            clearPlaylist()
+        }
     )
 }
 
 @Composable
 private fun Content(
-    componentSize: ComponentSize,
     episode: Episode?,
-    onSizeChanged: (ComponentSize) -> Unit = {}
+    componentClosed: () -> Unit = {}
 ) {
 
-    val isFullScreen = componentSize == ComponentSize.FullScreen
+    var playerSize by remember {
+        mutableStateOf(PlayerSize.None)
+    }
+
+    fun onSizeChanged(newPlayerSize: PlayerSize) {
+        playerSize = newPlayerSize
+    }
+
+    val isFullScreen = playerSize == PlayerSize.FullScreen
     BackHandler(isFullScreen) {
-        onSizeChanged(ComponentSize.Small)
+        onSizeChanged(PlayerSize.Small)
     }
 
     val mediaController by rememberMediaController()
     val mediaControllerState by rememberMediaControllerState(mediaController)
-    LaunchedEffect(mediaController) {
+    LaunchedEffect(mediaController, episode) {
+
+        if (episode == null) mediaController?.release()
+
         episode?.audioUrl?.let { audioUrl ->
+            onSizeChanged(PlayerSize.FullScreen)
+
             val media = MediaItem.Builder()
                 .setMediaId(audioUrl)
                 .build()
             mediaController?.setMediaItem(media)
             mediaController?.prepare()
+            mediaController?.play()
         }
     }
-
-    val lifecycle by rememberLifecycleState()
-    LaunchedEffect(lifecycle) {
-        when (lifecycle) {
-            Lifecycle.Event.ON_PAUSE -> {
-                mediaController?.release()
-            }
-            else -> {}
+    fun closePlayer() {
+        if (playerSize == PlayerSize.None) {
+            mediaController?.stop()
+            mediaController?.release()
+            componentClosed()
         }
     }
 
@@ -77,8 +82,13 @@ private fun Content(
     }
 
     DraggablePlayerBoxWithAnimatedContent(
-        componentSize = componentSize,
-        onSizeChanged = onSizeChanged,
+        playerSize = playerSize,
+        onSizeChanged = {
+            onSizeChanged(it)
+        },
+        onPlayerClose = {
+            closePlayer()
+        },
         fullScreenPlayer = {
             FullScreenPlayer(
                 episode,
@@ -86,7 +96,7 @@ private fun Content(
                 modifier = Modifier
                     .fillMaxHeight(),
                 collapsePlayer = {
-                    onSizeChanged(ComponentSize.Small)
+                    onSizeChanged(PlayerSize.Small)
                 },
                 onPlayClicked = {
                     handlePlayButtonClicked()
@@ -102,7 +112,7 @@ private fun Content(
                     .padding(bottom = 40.dp, top = 10.dp)
                     .padding(horizontal = 10.dp),
                 expandPlayer = {
-                    onSizeChanged(ComponentSize.FullScreen)
+                    onSizeChanged(PlayerSize.FullScreen)
                 },
                 onPlayClicked = {
                     handlePlayButtonClicked()
@@ -118,16 +128,12 @@ private fun Content(
 fun Preview_RowPlayer() {
     PodcastAppTheme {
         var playerSize by remember {
-            mutableStateOf(ComponentSize.Small)
+            mutableStateOf(PlayerSize.Small)
         }
         Scaffold(
             bottomBar = {
                 Content(
                     episode = mockEpisode(),
-                    componentSize = playerSize,
-                    onSizeChanged = {
-                        playerSize = it
-                    }
                 )
             }
         ) {
