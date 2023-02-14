@@ -13,7 +13,11 @@ class LocalEpisodeDataSource : ILocalEpisodeDataSource {
     }
 
     override fun getEpisodeByUuidFlow(uuid: String): Flow<Episode?> = flow {
-        emit(mockEpisode())
+        emit(
+            mockEpisodesList().first {
+                it.uuid == uuid
+            }
+        )
     }
 
     override suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode> {

@@ -29,7 +29,7 @@ fun mockEpisodesList() = listOf(
         timeWatched = 2964
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a2",
         name = "Case #2 Britney",
         duration = 6000
     ),
@@ -38,42 +38,42 @@ fun mockEpisodesList() = listOf(
         name = "Case #3 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a4",
         name = "Case #4 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a5",
         name = "Case #5 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a6",
         name = "Case #6 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a7",
         name = "Case #7 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a8",
         name = "Case #8 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a9",
         name = "Case #9 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a10",
         name = "Case #10 Britney"
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a11",
         name = "Case #11 Britney",
         duration = 6000
     ),
     mockEpisode().copy(
-        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
+        uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a12",
         name = "Case #12 Britney"
     ),
 )
@@ -82,7 +82,7 @@ fun mockEpisode(
     watched: Boolean = Random.nextBoolean()
 ) = Episode(
     podcastUuid = "8c9998d7-7114-4514-ab17-1a0ad05f73fc",
-    uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a2",
+    uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a1",
     name = "Case #1 Britney",
     imageUrl = "https://files.thisamericanlife.org/sites/all/themes/thislife/img/tal-name-1400x1400.png",
     datePublished = 1432958400,
