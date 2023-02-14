@@ -20,15 +20,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.DarkGray
-import com.example.podcast_player_ui.models.ComponentSize
+import com.example.podcast_player_ui.models.PlayerSize
 import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerDraggableBox(
-    componentSize: ComponentSize,
+    playerSize: PlayerSize,
     modifier: Modifier = Modifier,
     screenHeight: Dp,
-    onComponentSizeChanged: (ComponentSize) -> Unit = {},
+    onComponentSizeChanged: (PlayerSize) -> Unit = {},
     content: @Composable BoxScope.(screenFilled: Float) -> Unit = {}
 ) {
 
@@ -44,25 +44,25 @@ fun PlayerDraggableBox(
     }
 
     var nextComponentSize by remember {
-        mutableStateOf(componentSize)
+        mutableStateOf(playerSize)
     }
 
 
-    fun calculateHeight(componentSize: ComponentSize): Dp {
+    fun calculateHeight(playerSize: PlayerSize): Dp {
         val height = if (onDragging) {
             dynamicBoxHeightInDp
         } else {
-            when (componentSize) {
-                ComponentSize.None -> 0.dp
-                ComponentSize.Small -> ROW_PLAYER_HEIGHT
-                ComponentSize.FullScreen -> screenHeight
+            when (playerSize) {
+                PlayerSize.None -> 0.dp
+                PlayerSize.Small -> ROW_PLAYER_HEIGHT
+                PlayerSize.FullScreen -> screenHeight
             }
         }
         return height
     }
 
     val transition = updateTransition(
-        targetState = componentSize,
+        targetState = playerSize,
         label = "component size"
     )
     val animatedHeight by transition.animateDp(
@@ -101,7 +101,7 @@ fun PlayerDraggableBox(
                     state = rememberDraggableState { delta ->
                         coroutineScope.launch {
                             nextComponentSize = calculateNextComponentSize(
-                                currentComponentSize = componentSize,
+                                currentPlayerSize = playerSize,
                                 boxHeight = dynamicBoxHeightInDp,
                                 screenHeight = screenHeight,
                                 oldOffset = offsetY,
@@ -126,33 +126,33 @@ fun PlayerDraggableBox(
 }
 
 private fun calculateNextComponentSize(
-    currentComponentSize: ComponentSize,
+    currentPlayerSize: PlayerSize,
     boxHeight: Dp,
     screenHeight: Dp,
     oldOffset: Float,
     newOffset: Float,
-): ComponentSize {
+): PlayerSize {
 
     if (newOffset - oldOffset > 10 || newOffset - oldOffset < -10) {
         return if (newOffset > oldOffset) {
-            when (currentComponentSize) {
-                ComponentSize.FullScreen -> ComponentSize.Small
-                else -> ComponentSize.None
+            when (currentPlayerSize) {
+                PlayerSize.FullScreen -> PlayerSize.Small
+                else -> PlayerSize.None
             }
         } else {
-            when (currentComponentSize) {
-                ComponentSize.Small -> ComponentSize.FullScreen
-                else -> currentComponentSize
+            when (currentPlayerSize) {
+                PlayerSize.Small -> PlayerSize.FullScreen
+                else -> currentPlayerSize
             }
         }
     } else {
         val screenFilled = (boxHeight * 100) / screenHeight
         return if (boxHeight < ROW_PLAYER_HEIGHT) {
-            ComponentSize.None
+            PlayerSize.None
         } else if (screenFilled > 50) {
-            ComponentSize.FullScreen
+            PlayerSize.FullScreen
         } else {
-            ComponentSize.Small
+            PlayerSize.Small
         }
     }
 }

@@ -6,15 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_details_ui.screens.podcastDetails.PodcastDetailsScreen
 import com.example.podcast_player_ui.EpisodePlayerView
-import com.example.podcast_player_ui.models.ComponentSize
+import com.example.podcast_player_ui.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -24,23 +22,30 @@ class MainActivity : ComponentActivity() {
         setContent {
             PodcastAppTheme {
 
-                var playerSize by remember {
-                    mutableStateOf(ComponentSize.None)
-                }
+                val playerViewModel: PlayerViewModel = getViewModel()
+
+                // Remove after removing Mock data
+                val episodeUuid by playerViewModel.playingEpisodeUuid.collectAsState(initial = "")
+
+                val episode by playerViewModel.playingEpisode.collectAsState(initial = null)
+
                 Scaffold(
                     bottomBar = {
-                        EpisodePlayerView(
-                            playerSize,
-                            onSizeChanged = { newSize ->
-                                playerSize = newSize
-                            }
-                        )
+                        // Switch after removing Mock data to:  episode?.let {
+                        if (episodeUuid.isNotEmpty()) {
+                            EpisodePlayerView(
+                                episode = episode,
+                                clearPlaylist = {
+                                    playerViewModel.clearPlaylist()
+                                }
+                            )
+                        }
                     }
                 ) {
                     PodcastDetailsScreen(
                         modifier = Modifier.padding(it),
                         openPodcastPlayer = {
-                            playerSize = ComponentSize.FullScreen
+                            playerViewModel.playEpisode(it)
                         }
                     )
                 }
