@@ -31,7 +31,6 @@ fun DraggablePlayerBoxWithAnimatedContent(
         onComponentSizeChanged = onSizeChanged,
     ) { percentageOfScreenFilled ->
 
-        println("percentageOfScreenFilled $percentageOfScreenFilled")
         if (percentageOfScreenFilled > PERCENTAGE_OF_SCREEN_WHEN_FULLSREEN_PLAYER_ISVISIBLE) {
             val fullScreenPlayerAlpha =
                 calculateFullScreenPlayerAlpha(percentageOfScreenFilled)

@@ -14,7 +14,8 @@ import com.example.core_ui.extensions.roundedRectangle
 import com.example.podcast_player_ui.components.rowPlayer.EpisodeTitle
 import com.example.podcast_player_ui.components.rowPlayer.PlayerButtons
 
-val ROW_PLAYER_HEIGHT = 100.dp
+// Vertical padding + component size
+val ROW_PLAYER_HEIGHT = 120.dp
 
 @Composable
 fun RowPlayer(

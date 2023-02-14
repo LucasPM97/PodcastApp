@@ -99,7 +99,7 @@ private fun Content(
                 mediaControllerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp, top = 10.dp)
+                    .padding(bottom = 40.dp, top = 10.dp)
                     .padding(horizontal = 10.dp),
                 expandPlayer = {
                     onSizeChanged(ComponentSize.FullScreen)
