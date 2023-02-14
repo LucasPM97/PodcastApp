@@ -25,14 +25,12 @@ class MainActivity : ComponentActivity() {
                 val playerViewModel: PlayerViewModel = getViewModel()
 
                 // Remove after removing Mock data
-                val episodeUuid by playerViewModel.playingEpisodeUuid.collectAsState(initial = "")
-
-                val episode by playerViewModel.playingEpisode.collectAsState(initial = null)
+                val episode by playerViewModel.episode.collectAsState(initial = null)
 
                 Scaffold(
                     bottomBar = {
                         // Switch after removing Mock data to:  episode?.let {
-                        if (episodeUuid.isNotEmpty()) {
+                        episode?.let {
                             EpisodePlayerView(
                                 episode = episode,
                                 clearPlaylist = {
@@ -44,8 +42,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PodcastDetailsScreen(
                         modifier = Modifier.padding(it),
-                        openPodcastPlayer = {
-                            playerViewModel.playEpisode(it)
+                        openPodcastPlayer = { episodeUuid ->
+                            playerViewModel.playEpisode(episodeUuid)
                         }
                     )
                 }
