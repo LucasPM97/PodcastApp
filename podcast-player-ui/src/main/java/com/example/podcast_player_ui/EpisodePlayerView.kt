@@ -51,7 +51,6 @@ private fun Content(
     val mediaController by rememberMediaController()
     val mediaControllerState by rememberMediaControllerState(mediaController)
     LaunchedEffect(mediaController, episode) {
-
         if (episode == null) mediaController?.release()
 
         episode?.audioUrl?.let { audioUrl ->
@@ -73,12 +72,25 @@ private fun Content(
         }
     }
 
-    fun handlePlayButtonClicked() {
-        if (mediaControllerState.isPlaying) {
-            mediaController?.pause()
-        } else {
+    fun handlePlayButtonClicked(isPlaying: Boolean) {
+        if (isPlaying) {
             mediaController?.play()
+        } else {
+            mediaController?.pause()
         }
+    }
+
+    fun handleOnScrubMove(newPosition: Long) {
+        val position = if (newPosition < 0) 0L else newPosition
+        mediaController?.seekTo(position)
+    }
+
+    fun handleChangePosition(secondsToMove: Int) {
+        val positionInMilliseconds =
+            (mediaControllerState.currentPositionInSeconds + secondsToMove) * 1000L
+        mediaController?.seekTo(
+            if (positionInMilliseconds < 0) 0 else positionInMilliseconds
+        )
     }
 
     DraggablePlayerBoxWithAnimatedContent(
@@ -92,22 +104,27 @@ private fun Content(
         fullScreenPlayer = {
             FullScreenPlayer(
                 episode,
-                mediaController,
                 mediaControllerState,
                 modifier = Modifier
                     .fillMaxHeight(),
                 collapsePlayer = {
                     onSizeChanged(PlayerSize.Small)
                 },
-                onPlayClicked = {
-                    handlePlayButtonClicked()
+                onPlayPause = {
+                    handlePlayButtonClicked(it)
+                },
+                onChangePosition = {
+                    handleChangePosition(it)
+                },
+                onScrubMove = {
+                    handleOnScrubMove(it)
                 }
             )
         },
         rowPlayer = {
             RowPlayer(
                 episode,
-                mediaControllerState,
+                isPlaying = mediaControllerState.isPlaying ?: false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 40.dp, top = 10.dp)
@@ -115,8 +132,11 @@ private fun Content(
                 expandPlayer = {
                     onSizeChanged(PlayerSize.FullScreen)
                 },
-                onPlayClicked = {
-                    handlePlayButtonClicked()
+                onPlayPause = {
+                    handlePlayButtonClicked(it)
+                },
+                onChangePosition = {
+                    handleChangePosition(it)
                 }
             )
         }

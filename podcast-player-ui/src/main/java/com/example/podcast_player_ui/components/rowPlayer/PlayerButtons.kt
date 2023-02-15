@@ -3,7 +3,7 @@ package com.example.podcast_player_ui.components.rowPlayer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -12,20 +12,25 @@ import androidx.compose.runtime.Composable
 @Composable
 fun PlayerButtons(
     isPlaying: Boolean,
-    onPlayClicked: () -> Unit = {},
-    onSkipNextClicked: () -> Unit = {},
+    onPlayClicked: (isPlaying: Boolean) -> Unit = {},
+    onChangePosition: (secondsToMove: Int) -> Unit = {},
 ) {
-    IconButton(onClick = onPlayClicked) {
+    IconButton(onClick = {
+        onChangePosition(-10)
+    }) {
         Icon(
-            imageVector = if (isPlaying) Icons.Filled.Pause
-            else Icons.Filled.PlayArrow,
-            contentDescription = "play",
+            imageVector = Icons.Filled.Replay10,
+            contentDescription = "fav episode",
             tint = MaterialTheme.colorScheme.secondary
         )
     }
-    IconButton(onClick = onSkipNextClicked) {
+    IconButton(onClick = {
+        onPlayClicked(!isPlaying)
+    }) {
         Icon(
-            imageVector = Icons.Filled.SkipNext, contentDescription = "play",
+            imageVector = if (isPlaying) Icons.Filled.Pause
+            else Icons.Filled.PlayArrow,
+            contentDescription = "fav episode",
             tint = MaterialTheme.colorScheme.secondary
         )
     }

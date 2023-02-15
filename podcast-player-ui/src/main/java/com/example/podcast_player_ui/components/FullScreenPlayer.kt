@@ -1,15 +1,11 @@
 package com.example.podcast_player_ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.media3.session.MediaController
-import com.example.core.extensions.durationText
 import com.example.core.mocks.mockEpisode
 import com.example.core.models.Episode
 import com.example.core_ui.components.AppAsyncImage
@@ -18,17 +14,18 @@ import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.components.fullScreenPlayer.CollapseButton
 import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerButtons
-import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerTimeBar
+import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerController
 import com.example.podcast_player_ui.components.fullScreenPlayer.TitleWithFav
 
 @Composable
 fun FullScreenPlayer(
     episode: Episode?,
-    mediaController: MediaController?,
-    mediaControllerState: PlayerState?,
+    mediaControllerState: PlayerState,
     modifier: Modifier = Modifier,
     collapsePlayer: () -> Unit = {},
-    onPlayClicked: () -> Unit = {}
+    onPlayPause: (isPlaying: Boolean) -> Unit = {},
+    onChangePosition: (secondsToMove: Int) -> Unit = {},
+    onScrubMove: (newPosition: Long) -> Unit = {},
 ) {
 
     Column(
@@ -54,18 +51,20 @@ fun FullScreenPlayer(
             SpacerVertical20()
             TitleWithFav(episode)
             SpacerVertical20()
-            PlayerTimeBar(
-                mediaController,
-                isPlaying = mediaControllerState?.isPlaying ?: false,
-                episode,
-
+            PlayerController(
+                positionInSeconds = mediaControllerState.currentPositionInSeconds,
+                episodeDuration = episode?.duration ?: 0,
+                onScrubMove = onScrubMove,
+                onPlayPause = onPlayPause,
+            ) {
+                PlayerButtons(
+                    isPlaying = mediaControllerState.isPlaying,
+                    modifier = Modifier.fillMaxWidth(),
+                    onPlayClicked = onPlayPause,
+                    onChangePosition = onChangePosition
                 )
-            SpacerVertical20()
-            PlayerButtons(
-                isPlaying = mediaControllerState?.isPlaying ?: false,
-                modifier = Modifier.fillMaxWidth(),
-                onPlayClicked = onPlayClicked,
-            )
+            }
+
         }
     }
 }
@@ -76,8 +75,11 @@ private fun Preview_FullScreenPlayer() {
     PodcastAppTheme {
         FullScreenPlayer(
             episode = mockEpisode(),
-            mediaController = null,
-            mediaControllerState = null,
+            mediaControllerState = PlayerState(
+                isPlaying = false,
+                state = PlayerStates.Idle,
+                currentPositionInSeconds = 0
+            ),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
