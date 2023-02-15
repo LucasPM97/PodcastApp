@@ -31,12 +31,6 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
                     isPlaying = isPlaying
                 )
             }
-
-            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-                super.onTimelineChanged(timeline, reason)
-                val currentPeriod = timeline.periodCount
-                val lastIndex = timeline.getLastWindowIndex(false)
-            }
         }
         player?.addListener(observer)
 

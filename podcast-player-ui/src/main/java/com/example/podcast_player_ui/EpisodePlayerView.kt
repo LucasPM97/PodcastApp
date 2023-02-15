@@ -62,7 +62,7 @@ private fun Content(
                 .build()
             mediaController?.setMediaItem(media)
             mediaController?.prepare()
-            mediaController?.play()
+            mediaController?.playWhenReady = true
         }
     }
     fun closePlayer() {
@@ -92,6 +92,7 @@ private fun Content(
         fullScreenPlayer = {
             FullScreenPlayer(
                 episode,
+                mediaController,
                 mediaControllerState,
                 modifier = Modifier
                     .fillMaxHeight(),

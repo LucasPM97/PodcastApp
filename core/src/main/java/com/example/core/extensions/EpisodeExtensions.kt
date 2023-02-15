@@ -1,25 +1,14 @@
 package com.example.core.extensions
 
 import com.example.core.models.Episode
-import kotlin.math.roundToInt
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+
 
 fun Episode.durationText(): String {
     if (duration == null) return ""
 
-    val realDuration = duration.toDuration(
-        DurationUnit.SECONDS
-    )
-
-    realDuration.toComponents { hours, minutes, seconds, _ ->
-        if (minutes > 0) {
-            val minutesFormated = if (minutes > 9) minutes.toString() else "0$minutes"
-            return "$hours:$minutesFormated"
-        } else {
-            return "${seconds}s"
-        }
-    }
+    return duration.toPlayerDurationText(DurationUnit.SECONDS)
 }
 
 fun Episode.datePublishedText(): String {
