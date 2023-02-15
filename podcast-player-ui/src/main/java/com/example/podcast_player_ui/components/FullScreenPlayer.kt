@@ -56,15 +56,14 @@ fun FullScreenPlayer(
                 episodeDuration = episode?.duration ?: 0,
                 onScrubMove = onScrubMove,
                 onPlayPause = onPlayPause,
-            ) {
-                PlayerButtons(
-                    isPlaying = mediaControllerState.isPlaying,
-                    modifier = Modifier.fillMaxWidth(),
-                    onPlayClicked = onPlayPause,
-                    onChangePosition = onChangePosition
-                )
-            }
-
+            )
+            SpacerVertical20()
+            PlayerButtons(
+                isPlaying = mediaControllerState.isPlaying,
+                modifier = Modifier.fillMaxWidth(),
+                onPlayClicked = onPlayPause,
+                onChangePosition = onChangePosition
+            )
         }
     }
 }

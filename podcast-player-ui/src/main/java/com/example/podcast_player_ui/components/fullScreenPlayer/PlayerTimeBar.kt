@@ -21,7 +21,6 @@ fun PlayerController(
     modifier: Modifier = Modifier,
     onPlayPause: (isPlaying: Boolean) -> Unit = {},
     onScrubMove: (newPosition: Long) -> Unit = {},
-    playerActionButtons: @Composable ColumnScope.(positionInSeconds: Int) -> Unit = {},
 ) {
 
     Column(modifier) {
@@ -52,8 +51,6 @@ fun PlayerController(
                 style = MaterialTheme.typography.bodySmall
             )
         }
-        SpacerVertical20()
-        playerActionButtons(positionInSeconds)
     }
 }
 
