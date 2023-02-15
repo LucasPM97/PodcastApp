@@ -40,7 +40,7 @@ fun FullScreenPlayer(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(horizontal = 50.dp)
+                .padding(horizontal = 30.dp)
                 .weight(1f)
         ) {
             AppAsyncImage(
