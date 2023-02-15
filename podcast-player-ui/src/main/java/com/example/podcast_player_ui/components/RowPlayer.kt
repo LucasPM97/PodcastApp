@@ -20,10 +20,11 @@ val ROW_PLAYER_HEIGHT = 120.dp
 @Composable
 fun RowPlayer(
     episode: Episode?,
-    mediaControllerState: PlayerState?,
+    isPlaying: Boolean,
     modifier: Modifier = Modifier,
     expandPlayer: () -> Unit = {},
-    onPlayClicked: () -> Unit = {}
+    onPlayPause: (isPlaying: Boolean) -> Unit = {},
+    onChangePosition: (secondsToMove: Int) -> Unit = {}
 ) {
     Row(
         modifier = modifier.clickable {
@@ -46,8 +47,9 @@ fun RowPlayer(
             EpisodeTitle(episode)
         }
         PlayerButtons(
-            isPlaying = mediaControllerState?.isPlaying ?: false,
-            onPlayClicked = onPlayClicked,
+            isPlaying = isPlaying,
+            onPlayClicked = onPlayPause,
+            onChangePosition = onChangePosition
         )
     }
 }
