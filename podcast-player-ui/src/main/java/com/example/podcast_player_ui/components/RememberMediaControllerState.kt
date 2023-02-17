@@ -38,8 +38,6 @@ fun rememberMediaControllerState(player: Player?): PlayerState {
         if (isPlaying) {
             while (mediaControllerState.state != PlayerStates.Ended) {
                 player?.let {
-
-                    println("Current position mediacontroller: ${player.currentPosition}")
                     delay(1000)
                     mediaControllerState = mediaControllerState.copy(
                         currentPosition = player.currentPosition,

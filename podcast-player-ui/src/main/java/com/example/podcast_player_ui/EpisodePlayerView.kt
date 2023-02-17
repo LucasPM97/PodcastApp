@@ -85,9 +85,12 @@ private fun Content(
 
     fun closePlayer() {
         if (playerSize == PlayerSize.None) {
-            mediaController?.stop()
-            mediaController?.release()
-            componentClosed()
+            mediaController?.run {
+                stop()
+                clearMediaItems()
+                release()
+                componentClosed()
+            }
         }
     }
 
