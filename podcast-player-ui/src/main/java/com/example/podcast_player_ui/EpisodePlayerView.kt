@@ -86,10 +86,10 @@ private fun Content(
     }
 
     fun handleChangePosition(secondsToMove: Int) {
-        val positionInMilliseconds =
-            (mediaControllerState.currentPositionInSeconds + secondsToMove) * 1000L
+        val newPosition =
+            mediaControllerState.currentPosition + secondsToMove * 1000L
         mediaController?.seekTo(
-            if (positionInMilliseconds < 0) 0 else positionInMilliseconds
+            if (newPosition < 0) 0 else newPosition
         )
     }
 
@@ -124,11 +124,10 @@ private fun Content(
         rowPlayer = {
             RowPlayer(
                 episode,
-                isPlaying = mediaControllerState.isPlaying ?: false,
+                mediaControllerState = mediaControllerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 40.dp, top = 10.dp)
-                    .padding(horizontal = 10.dp),
+                    .padding(bottom = 40.dp),
                 expandPlayer = {
                     onSizeChanged(PlayerSize.FullScreen)
                 },

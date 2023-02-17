@@ -1,12 +1,19 @@
 package com.example.core.extensions
 
+import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-fun Int.toPlayerDurationText(durationUnit: DurationUnit): String {
-    val realDuration = this.toDuration(durationUnit)
+fun Int.toPlayerDurationText(durationUnit: DurationUnit): String =
+    this.toDuration(durationUnit)
+        .getDurationText()
 
-    realDuration.toComponents { hours, minutes, seconds, _ ->
+fun Long.toPlayerDurationText(durationUnit: DurationUnit): String =
+    this.toDuration(durationUnit)
+        .getDurationText()
+
+private fun Duration.getDurationText(): String {
+    toComponents { hours, minutes, seconds, _ ->
         return if (hours > 0) {
             addCeroOnFrontIfIsNeeded(hours.toInt()) + ":"
         } else {

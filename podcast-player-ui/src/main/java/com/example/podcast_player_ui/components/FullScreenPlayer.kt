@@ -14,7 +14,7 @@ import com.example.core_ui.extensions.roundedRectangle
 import com.example.core_ui.theme.PodcastAppTheme
 import com.example.podcast_player_ui.components.fullScreenPlayer.CollapseButton
 import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerButtons
-import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerController
+import com.example.podcast_player_ui.components.fullScreenPlayer.PlayerTimeBar
 import com.example.podcast_player_ui.components.fullScreenPlayer.TitleWithFav
 
 @Composable
@@ -51,8 +51,9 @@ fun FullScreenPlayer(
             SpacerVertical20()
             TitleWithFav(episode)
             SpacerVertical20()
-            PlayerController(
-                positionInSeconds = mediaControllerState.currentPositionInSeconds,
+            PlayerTimeBar(
+                currentPosition = mediaControllerState.currentPosition,
+                bufferedPosition = mediaControllerState.bufferedPosition,
                 episodeDuration = episode?.duration ?: 0,
                 onScrubMove = onScrubMove,
                 onPlayPause = onPlayPause,
@@ -77,7 +78,8 @@ private fun Preview_FullScreenPlayer() {
             mediaControllerState = PlayerState(
                 isPlaying = false,
                 state = PlayerStates.Idle,
-                currentPositionInSeconds = 0
+                currentPosition = 0,
+                bufferedPosition = 0,
             ),
             modifier = Modifier
                 .fillMaxSize()

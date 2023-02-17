@@ -13,7 +13,8 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
             PlayerState(
                 isPlaying = false,
                 state = PlayerStates.Idle,
-                currentPositionInSeconds = 0
+                currentPosition = 0,
+                bufferedPosition = 0
             )
         )
     }
@@ -27,7 +28,9 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
                 while (state != PlayerStates.Ended) {
                     delay(1000)
                     mediaControllerState.value = mediaControllerState.value.copy(
-                        currentPositionInSeconds = (player.currentPosition / 1000).toInt()
+                        currentPosition = player.currentPosition,
+                        bufferedPosition = player.bufferedPosition
+
                     )
                 }
             }
@@ -54,7 +57,8 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
             override fun onEvents(player: Player, events: Player.Events) {
                 super.onEvents(player, events)
                 mediaControllerState.value = mediaControllerState.value.copy(
-                    currentPositionInSeconds = (player.currentPosition / 1000).toInt()
+                    currentPosition = player.currentPosition,
+                    bufferedPosition = player.bufferedPosition
                 )
             }
         }
@@ -72,7 +76,8 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
 data class PlayerState(
     val state: PlayerStates,
     val isPlaying: Boolean,
-    val currentPositionInSeconds: Int,
+    val currentPosition: Long,
+    val bufferedPosition: Long,
 )
 
 private fun mapPlayerStateToEnum(state: Int): PlayerStates {
