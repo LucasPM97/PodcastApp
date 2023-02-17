@@ -89,8 +89,8 @@ private fun Content(
                 stop()
                 clearMediaItems()
                 release()
-                componentClosed()
             }
+            componentClosed()
         }
     }
 
