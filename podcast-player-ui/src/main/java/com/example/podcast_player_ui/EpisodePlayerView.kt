@@ -51,15 +51,14 @@ private fun Content(
 
     val mediaController = rememberMediaController()
     val mediaControllerState = rememberMediaControllerState(mediaController)
-    fun playEpisode() {
-        episode?.audioUrl?.let { audioUrl ->
-
+    fun playEpisode(audioUrl: String) {
+        mediaController?.let {
             val media = MediaItem.Builder()
                 .setMediaId(audioUrl)
                 .build()
-            mediaController?.setMediaItem(media)
-            mediaController?.prepare()
-            mediaController?.playWhenReady = true
+            mediaController.setMediaItem(media)
+            mediaController.prepare()
+            mediaController.playWhenReady = true
         }
     }
     LaunchedEffect(mediaController) {
@@ -69,18 +68,19 @@ private fun Content(
                 val isNotPlayingThisEpisode = currentMediaItem?.mediaId != audioUrl
 
                 if (isNotPlayingThisEpisode) {
-                    playEpisode()
+                    playEpisode(audioUrl)
                 }
             }
-
-
         }
     }
+
     LaunchedEffect(episode) {
         if (episode == null) mediaController?.release()
 
         onSizeChanged(PlayerSize.FullScreen)
-        playEpisode()
+        episode?.audioUrl?.let { audioUrl ->
+            playEpisode(audioUrl)
+        }
     }
 
     fun closePlayer() {
@@ -100,16 +100,21 @@ private fun Content(
     }
 
     fun handleOnScrubMove(newPosition: Long) {
-        val position = if (newPosition < 0) 0L else newPosition
-        mediaController?.seekTo(position)
+        mediaController?.let {
+            val position = if (newPosition < 0) 0L else newPosition
+            mediaController.seekTo(position)
+        }
     }
 
     fun handleChangePosition(secondsToMove: Int) {
-        val newPosition =
-            mediaControllerState.currentPosition + secondsToMove * 1000L
-        mediaController?.seekTo(
-            if (newPosition < 0) 0 else newPosition
-        )
+        mediaController?.let {
+            val newPosition =
+                mediaController.currentPosition + secondsToMove * 1000L
+            mediaController.seekTo(
+                if (newPosition < 0) 0 else newPosition
+            )
+        }
+
     }
 
     DraggablePlayerBoxWithAnimatedContent(
