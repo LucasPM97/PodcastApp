@@ -1,10 +1,12 @@
 package com.example.podcast_player_ui.components
 
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun rememberMediaControllerState(player: Player?): PlayerState {
@@ -19,11 +21,25 @@ fun rememberMediaControllerState(player: Player?): PlayerState {
         )
     }
 
-    LaunchedEffect(mediaControllerState.isPlaying) {
-        val isPlaying = mediaControllerState.isPlaying
+    fun init() {
         player?.let {
-            if (isPlaying) {
-                while (true) {
+            mediaControllerState = mediaControllerState.copy(
+                isPlaying = it.isPlaying,
+                state = mapPlayerStateToEnum(it.playbackState),
+                currentPosition = player.currentPosition,
+                bufferedPosition = player.bufferedPosition
+            )
+        }
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    fun startTimerJob() = coroutineScope.launch {
+        val isPlaying = mediaControllerState.isPlaying
+        if (isPlaying) {
+            while (mediaControllerState.state != PlayerStates.Ended) {
+                player?.let {
+
+                    println("Current position mediacontroller: ${player.currentPosition}")
                     delay(1000)
                     mediaControllerState = mediaControllerState.copy(
                         currentPosition = player.currentPosition,
@@ -60,19 +76,13 @@ fun rememberMediaControllerState(player: Player?): PlayerState {
                 )
             }
         }
-        //Init player state
-        player?.let {
-            it.addListener(observer)
-            mediaControllerState = mediaControllerState.copy(
-                isPlaying = it.isPlaying,
-                state = mapPlayerStateToEnum(it.playbackState),
-                currentPosition = player.currentPosition,
-                bufferedPosition = player.bufferedPosition
-            )
-        }
+        player?.addListener(observer)
+        init()
+        val timerJob = startTimerJob()
 
         onDispose {
             player?.removeListener(observer)
+            timerJob.cancel()
         }
     }
 
