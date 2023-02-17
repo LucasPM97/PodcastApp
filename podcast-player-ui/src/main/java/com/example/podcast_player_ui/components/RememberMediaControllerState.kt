@@ -7,8 +7,8 @@ import androidx.media3.common.Timeline
 import kotlinx.coroutines.delay
 
 @Composable
-fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
-    val mediaControllerState = remember {
+fun rememberMediaControllerState(player: Player?): PlayerState {
+    var mediaControllerState by remember {
         mutableStateOf(
             PlayerState(
                 isPlaying = false,
@@ -19,15 +19,13 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
         )
     }
 
-    val isPlaying = mediaControllerState.value.isPlaying
-    val state = mediaControllerState.value.state
-
-    LaunchedEffect(isPlaying, state) {
+    LaunchedEffect(mediaControllerState.isPlaying) {
+        val isPlaying = mediaControllerState.isPlaying
         player?.let {
             if (isPlaying) {
-                while (state != PlayerStates.Ended) {
+                while (true) {
                     delay(1000)
-                    mediaControllerState.value = mediaControllerState.value.copy(
+                    mediaControllerState = mediaControllerState.copy(
                         currentPosition = player.currentPosition,
                         bufferedPosition = player.bufferedPosition
 
@@ -42,28 +40,36 @@ fun rememberMediaControllerState(player: Player?): MutableState<PlayerState> {
         val observer = object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
-                mediaControllerState.value = mediaControllerState.value.copy(
+                mediaControllerState = mediaControllerState.copy(
                     state = mapPlayerStateToEnum(playbackState)
                 )
             }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 super.onIsPlayingChanged(isPlaying)
-                mediaControllerState.value = mediaControllerState.value.copy(
+                mediaControllerState = mediaControllerState.copy(
                     isPlaying = isPlaying
                 )
             }
 
             override fun onEvents(player: Player, events: Player.Events) {
                 super.onEvents(player, events)
-                mediaControllerState.value = mediaControllerState.value.copy(
+                mediaControllerState = mediaControllerState.copy(
                     currentPosition = player.currentPosition,
                     bufferedPosition = player.bufferedPosition
                 )
             }
         }
-        player?.addListener(observer)
-
+        //Init player state
+        player?.let {
+            it.addListener(observer)
+            mediaControllerState = mediaControllerState.copy(
+                isPlaying = it.isPlaying,
+                state = mapPlayerStateToEnum(it.playbackState),
+                currentPosition = player.currentPosition,
+                bufferedPosition = player.bufferedPosition
+            )
+        }
 
         onDispose {
             player?.removeListener(observer)

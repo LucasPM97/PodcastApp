@@ -48,13 +48,11 @@ private fun Content(
         onSizeChanged(PlayerSize.Small)
     }
 
-    val mediaController by rememberMediaController()
-    val mediaControllerState by rememberMediaControllerState(mediaController)
-    LaunchedEffect(mediaController, episode) {
-        if (episode == null) mediaController?.release()
 
+    val mediaController = rememberMediaController()
+    val mediaControllerState = rememberMediaControllerState(mediaController)
+    fun playEpisode() {
         episode?.audioUrl?.let { audioUrl ->
-            onSizeChanged(PlayerSize.FullScreen)
 
             val media = MediaItem.Builder()
                 .setMediaId(audioUrl)
@@ -64,6 +62,27 @@ private fun Content(
             mediaController?.playWhenReady = true
         }
     }
+    LaunchedEffect(mediaController) {
+        episode?.audioUrl?.let { audioUrl ->
+
+            mediaController?.run {
+                val isNotPlayingThisEpisode = currentMediaItem?.mediaId != audioUrl
+
+                if (isNotPlayingThisEpisode) {
+                    playEpisode()
+                }
+            }
+
+
+        }
+    }
+    LaunchedEffect(episode) {
+        if (episode == null) mediaController?.release()
+
+        onSizeChanged(PlayerSize.FullScreen)
+        playEpisode()
+    }
+
     fun closePlayer() {
         if (playerSize == PlayerSize.None) {
             mediaController?.stop()
