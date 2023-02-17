@@ -9,14 +9,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.extensions.toPlayerDurationText
 import com.example.core_ui.components.SpacerVertical
-import com.example.core_ui.components.SpacerVertical20
 import com.example.core_ui.theme.PodcastAppTheme
 import kotlin.time.DurationUnit
 
 @androidx.media3.common.util.UnstableApi
 @Composable
-fun PlayerController(
-    positionInSeconds: Int,
+fun PlayerTimeBar(
+    currentPosition: Long,
+    bufferedPosition: Long,
     episodeDuration: Int,
     modifier: Modifier = Modifier,
     onPlayPause: (isPlaying: Boolean) -> Unit = {},
@@ -32,8 +32,9 @@ fun PlayerController(
             onScrubStop = {
                 onPlayPause(true)
             },
-            durationInMilliseconds = episodeDuration * 1000L,
-            currentPosition = positionInSeconds * 1000L,
+            duration = episodeDuration * 1000L,
+            currentPosition = currentPosition,
+            bufferedPosition = bufferedPosition
         )
         SpacerVertical(space = 10)
         Row(
@@ -43,7 +44,7 @@ fun PlayerController(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = positionInSeconds.toPlayerDurationText(DurationUnit.SECONDS),
+                text = currentPosition.toPlayerDurationText(DurationUnit.MILLISECONDS),
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
@@ -58,14 +59,15 @@ fun PlayerController(
 @Composable
 private fun PreviewPlayerTimeBar() {
     PodcastAppTheme {
-        var positionInSeconds by remember {
-            mutableStateOf(0)
+        var position by remember {
+            mutableStateOf(0L)
         }
-        PlayerController(
-            positionInSeconds = positionInSeconds,
+        PlayerTimeBar(
+            currentPosition = position,
+            bufferedPosition = position,
             episodeDuration = 4000,
             onScrubMove = {
-                positionInSeconds = (it / 1000).toInt()
+                position = it
             },
             modifier = Modifier
                 .fillMaxWidth()
