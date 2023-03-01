@@ -28,8 +28,8 @@ class LocalEpisodeDataSource : ILocalEpisodeDataSource {
         //TODO: Implement Database INSERT List
     }
 
-    override suspend fun getEpisodesHistory(pageLimit: Int): List<Episode> {
-        return mockWatchedEpisodeList()
+    override fun getEpisodesHistory(pageLimit: Int): Flow<List<Episode>> = flow {
+        emit(mockWatchedEpisodeList(pageLimit))
     }
 
     override suspend fun includeEpisodeToHistory(episodeUuid: String) {
@@ -41,18 +41,19 @@ class LocalEpisodeDataSource : ILocalEpisodeDataSource {
         return mockEpisode()
     }
 
-    private fun mockWatchedEpisodeList(): List<Episode> {
-        return listOf(
-            mockEpisode(true),
-            mockEpisode(true).copy(
-                uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-                name = "Case #2 Britney"
-            ),
-            mockEpisode(true).copy(
-                uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a3",
-                name = "Case #2 Britney"
-            ),
-        )
+    private fun mockWatchedEpisodeList(pageLimit: Int): List<Episode> {
+        val watchedEpisodes = mutableListOf<Episode>()
+
+        (1..pageLimit).forEach { it ->
+            watchedEpisodes.add(
+                mockEpisode(true).copy(
+                    uuid = "eb9d1c8f-58a4-4adb-a3d3-6bca573d31a$it",
+                    name = "Case #$it Britney"
+                )
+            )
+        }
+
+        return watchedEpisodes
     }
 }
 

@@ -8,7 +8,7 @@ interface ILocalEpisodeDataSource {
     fun getEpisodeByUuidFlow(uuid: String): Flow<Episode?>
     suspend fun getEpisodesByPodcast(podcastUuid: String): List<Episode>
     suspend fun storeEpisodes(episodes: List<Episode>)
-    suspend fun getEpisodesHistory(pageLimit: Int): List<Episode>
+    fun getEpisodesHistory(pageLimit: Int): Flow<List<Episode>>
     suspend fun includeEpisodeToHistory(episodeUuid: String)
     suspend fun getEpisode(episodeUuid: String): Episode
 }

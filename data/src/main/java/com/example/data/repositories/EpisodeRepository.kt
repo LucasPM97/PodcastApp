@@ -23,7 +23,7 @@ class EpisodeRepository(
         localDataSource.storeEpisodes(episodes)
     }
 
-    override suspend fun getEpisodesHistory(pageLimit: Int): List<Episode> {
+    override fun getEpisodesHistory(pageLimit: Int): Flow<List<Episode>> {
         return localDataSource.getEpisodesHistory(pageLimit)
     }
 

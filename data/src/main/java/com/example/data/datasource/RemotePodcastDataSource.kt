@@ -23,13 +23,11 @@ class RemotePodcastDataSource(
     override suspend fun getAllPodcastsForTerm(
         term: String,
         pageLimit: Int
-    ): SearchSeriesForTermQuery.SearchForTerm? {
+    ): SearchSeriesForTermQuery.SearchForTerm? = apolloClient.safeQueryExecute(
+        SearchSeriesForTermQuery(
+            term,
+            limitPerPage = pageLimit
+        )
+    )?.searchForTerm
 
-        return apolloClient.safeQueryExecute(
-            SearchSeriesForTermQuery(
-                term,
-                limitPerPage = pageLimit
-            )
-        )?.searchForTerm
-    }
 }
